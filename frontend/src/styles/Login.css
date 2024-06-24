@@ -1,0 +1,35 @@
+.LoginContainer {
+  height: 100vh;
+  width: 100vh;
+  background-color: #262626;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.LogoContainer {
+  display: flex;
+  gap: 40px;
+  padding-top: 50px;
+}
+
+.LoginContainer .emblem {
+  height: 80px;
+}
+
+.LoginContainer .Logo {
+  height: 80px;
+}
+
+.input-fields {
+  display: flex;
+  flex-direction: column;
+  padding-top: 100px;
+  gap: 20px;
+}
+
+.input-fields input {
+  background-color: #e1e1e2;
+  height: 8vh;
+  width: 50vh;
+}
