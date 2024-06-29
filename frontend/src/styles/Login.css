@@ -1,5 +1,4 @@
-body,
-html {
+.LoginPage {
   height: 100%;
   margin: 0;
   display: flex;
