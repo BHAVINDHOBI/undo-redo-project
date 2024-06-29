@@ -7,7 +7,7 @@ html {
   align-items: center;
 }
 
-.LoginContainer {
+.SigninContainer {
   height: auto;
   width: 80vh;
   background-color: #262626;
@@ -24,19 +24,19 @@ html {
   padding-top: 50px;
 }
 
-.LoginContainer .emblem {
+.SigninContainer .emblem {
   height: 80px;
 }
 
-.LoginContainer .Logo {
+.SigninContainer .Logo {
   height: 80px;
 }
 
 .input-fields {
   display: flex;
   flex-direction: column;
-  padding-top: 30px;
-  gap: 35px;
+  padding-top: 20px;
+  gap: 32px;
 }
 
 .input-fields input {
@@ -55,7 +55,7 @@ html {
   outline: none;
 }
 
-.LoginButton {
+.SigninButton {
   background: linear-gradient(90deg, #a86dff, #73c8ff);
   color: white;
   padding: 10px 20px;
@@ -67,11 +67,12 @@ html {
   text-align: center;
 }
 
-.LoginOptions {
+.SigninOptions {
   display: flex;
   flex-direction: row;
   justify-content: center;
   gap: 20px;
+  padding-bottom: 25px;
 }
 
 .Options {
@@ -88,17 +89,6 @@ html {
 .Options img {
   max-width: 100%;
   max-height: 100%;
-}
-
-.RegisterURl {
-  text-decoration: underline;
-  color: #369fff;
-  cursor: pointer;
-}
-
-.NewUser {
-  font-size: 20px;
-  padding-bottom: 35px;
 }
 
 .separator {
@@ -119,15 +109,15 @@ html {
 }
 
 @media (max-width: 1080px) {
-  .LoginContainer {
+  .SigninContainer {
     width: 80vw;
     height: 70vh;
     justify-content: center;
     align-items: center;
   }
 
-  .LoginContainer .emblem,
-  .LoginContainer .Logo {
+  .SigninContainer .emblem,
+  .SigninContainer .Logo {
     height: 70px;
   }
 
@@ -145,23 +135,18 @@ html {
     width: 35px;
     height: 35px;
   }
-
-  .NewUser {
-    font-size: 25px;
-    padding-top: 25px;
-  }
 }
 
 @media (max-width: 768px) {
-  .LoginContainer {
+  .SigninContainer {
     width: 80vw;
     height: 70vh;
     justify-content: center;
     align-items: center;
   }
 
-  .LoginContainer .emblem,
-  .LoginContainer .Logo {
+  .SigninContainer .emblem,
+  .SigninContainer .Logo {
     height: 70px;
   }
 
@@ -179,21 +164,17 @@ html {
     width: 35px;
     height: 35px;
   }
-
-  .NewUser {
-    font-size: 16px;
-  }
 }
 
 @media (max-width: 480px) {
-  .LoginContainer {
+  .SigninContainer {
     width: 85vw;
     height: 70vh;
     gap: 25px;
   }
 
-  .LoginContainer .emblem,
-  .LoginContainer .Logo {
+  .SigninContainer .emblem,
+  .SigninContainer .Logo {
     height: 50px;
   }
 
@@ -210,9 +191,5 @@ html {
   .Options {
     width: 35px;
     height: 35px;
-  }
-
-  .NewUser {
-    font-size: 16px;
   }
 }

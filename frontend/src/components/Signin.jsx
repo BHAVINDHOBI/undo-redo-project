@@ -4,17 +4,24 @@ import NovicLogo from "../assets/NovicLogo.png";
 import GoogleLogo from "../assets/Google.svg";
 
 import MicrosoftLogo from "../assets/Microsoft Logo.svg";
-import "../styles/Login.css";
+import "../styles/Signin.css";
 
-const Login = () => {
+const Signin = () => {
   return (
-    <div className="LoginContainer">
+    <div className="SigninContainer">
       <div className="LogoContainer">
         <img src={NovicLogo} alt="NovicLogo" className="Logo" />
         <img src={NovicEmblem} alt="Novic" className="emblem" />
       </div>
 
       <div className="input-fields">
+        <input
+          type="email"
+          name="Username"
+          id="Username"
+          placeholder="Username"
+          required
+        />
         <input
           type="text"
           name="email"
@@ -31,14 +38,14 @@ const Login = () => {
         />
       </div>
       <div className="button">
-        <button className="LoginButton">Login</button>
+        <button className="SigninButton">Signin</button>
       </div>
 
       <div class="separator">
         <span class="separator-text">OR</span>
       </div>
 
-      <div className="LoginOptions">
+      <div className="SigninOptions">
         <div>
           <img className="Options" src={GoogleLogo}></img>
         </div>
@@ -47,12 +54,8 @@ const Login = () => {
           <img className="Options" src={MicrosoftLogo}></img>
         </div>
       </div>
-
-      <div className="NewUser">
-        New User ? <span className="RegisterURl">Register</span>{" "}
-      </div>
     </div>
   );
 };
 
-export default Login;
+export default Signin;
