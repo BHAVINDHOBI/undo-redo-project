@@ -18,6 +18,12 @@ import Table from "./ToolBar_Image/Table.svg";
 import TextColor from "./ToolBar_Image/TextColor.svg";
 import Underline from "./ToolBar_Image/Underline.svg";
 import Upload from "./ToolBar_Image/upload_file.svg";
+import User from "./AppBar_Image/user.svg";
+import Notification from "./AppBar_Image/notification.svg";
+import Logout from "./AppBar_Image/logout.svg";
+import NoviceLogo from "./NovicLogo.png";
+import NoviceFigma from "./NoviceFigma.png";
+import Italic from "./ToolBar_Image/Italic.svg";
 
 const ToolBarImage = {
   Undo: Undo,
@@ -40,6 +46,12 @@ const ToolBarImage = {
   TextColor: TextColor,
   Underline: Underline,
   Upload: Upload,
+  User: User,
+  Notification: Notification,
+  Logout: Logout,
+  NoviceFigma: NoviceFigma,
+  NoviceLogo: NoviceLogo,
+  Italic: Italic,
 };
 
 export default ToolBarImage;

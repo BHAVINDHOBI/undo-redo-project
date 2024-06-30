@@ -1,11 +1,13 @@
 import React from "react";
 import TextEditorToolbar from "./TextEditorToolbar";
+import AppBar from "./AppBar";
 
 const MainPage = () => {
   return (
-    <div>
+    <>
+      <AppBar />
       <TextEditorToolbar />
-    </div>
+    </>
   );
 };
 

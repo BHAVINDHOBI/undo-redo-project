@@ -1,0 +1,35 @@
+.AppContainer {
+  background-color: #36454f;
+  width: 100%;
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.Logo-Container {
+  display: flex;
+  gap: 20px;
+}
+
+.Logo-Container img {
+  height: 25px;
+}
+
+.AppBar-Utitilies {
+  display: flex;
+  gap: 25px;
+}
+
+.Profile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.Notification-Logout {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
