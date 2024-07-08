@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import NovicEmblem from "../assets/NoviceFigma.png";
 import NovicLogo from "../assets/NovicLogo.png";
 import GoogleLogo from "../assets/Google.svg";
-
-import MicrosoftLogo from "../assets/Microsoft Logo.svg";
+import MicrosoftLogo from "../assets/Microsoft_Logo.svg"; // Ensure the file is renamed to avoid spaces
 import "../styles/Login.css";
-import { useNavigate, Link } from "react-router-dom";
-import { useState } from "react";
 
 const serverapiUrl = import.meta.env.VITE_API_URL;
 
@@ -33,7 +31,6 @@ const Login = () => {
       const data = await response.json();
       if (data.success && data.user) {
         localStorage.setItem("token", data.user);
-
         alert("Login successful");
         navigate("/");
       } else {
@@ -48,8 +45,8 @@ const Login = () => {
     <div className="LoginPage">
       <div className="LoginContainer">
         <div className="LogoContainer">
-          <img src={NovicLogo} alt="NovicLogo" className="Logo" />
-          <img src={NovicEmblem} alt="Novic" className="emblem" />
+          <img src={NovicLogo} alt="Novic Logo" className="Logo" />
+          <img src={NovicEmblem} alt="Novic Emblem" className="emblem" />
         </div>
         <form onSubmit={userLogin}>
           <div className="input-fields">
@@ -77,24 +74,27 @@ const Login = () => {
           </div>
         </form>
 
-        <div class="separator">
-          <span class="separator-text">OR</span>
+        <div className="separator">
+          <span className="separator-text">OR</span>
         </div>
 
         <div className="LoginOptions">
           <div onClick={handleGoogleLogin}>
-            <img className="Options" src={GoogleLogo}></img>
+            <img className="Options" src={GoogleLogo} alt="Google Login" />
           </div>
 
           <div>
-            <img className="Options" src={MicrosoftLogo}></img>
+            <img
+              className="Options"
+              src={MicrosoftLogo}
+              alt="Microsoft Login"
+            />
           </div>
         </div>
 
         <div className="NewUser">
-          New User ?{" "}
-          <span className="RegisterURl">
-            {" "}
+          New User?{" "}
+          <span className="RegisterURL">
             <Link to="/signin">Register</Link>
           </span>
         </div>
