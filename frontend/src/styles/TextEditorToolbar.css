@@ -18,8 +18,9 @@
 }
 
 .undo-btn {
-  border: 1px solid black;
-  border-color: #36454f;
+  border: 1px solid;
+  box-sizing: border-box;
+  border-color: #b5c0d0;
   border-radius: 3px;
   padding: 0 2.5px;
   cursor: pointer;

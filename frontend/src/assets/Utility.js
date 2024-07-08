@@ -21,8 +21,8 @@ import Upload from "./ToolBar_Image/upload_file.svg";
 import User from "./AppBar_Image/user.svg";
 import Notification from "./AppBar_Image/notification.svg";
 import Logout from "./AppBar_Image/logout.svg";
-import NoviceLogo from "./NovicLogo.png";
-import NoviceFigma from "./NoviceFigma.png";
+import NoviceLogo from "./Application_Image/NovicLogo.png";
+import NoviceFigma from "./Application_Image/NoviceFigma.png";
 import Italic from "./ToolBar_Image/Italic.svg";
 
 const ToolBarImage = {
