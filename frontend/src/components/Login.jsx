@@ -1,12 +1,12 @@
-import React from "react";
-import NovicEmblem from "../assets/NoviceFigma.png";
-import NovicLogo from "../assets/NovicLogo.png";
-import GoogleLogo from "../assets/Google.svg";
-
-import MicrosoftLogo from "../assets/Microsoft Logo.svg";
-import "../styles/Login.css";
+import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { useState } from "react";
+import NovicEmblem from "../assets/Application_Image/NoviceFigma.png";
+import NovicLogo from "../assets/Application_Image/NovicLogo.png";
+import GoogleLogo from "../assets/Application_Image/Google.svg";
+import MicrosoftLogo from "../assets/Application_Image/Microsoft_Logo.svg";
+import "../styles/Login.css";
+import { Box, Alert, IconButton, Collapse } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 const serverapiUrl = import.meta.env.VITE_API_URL;
 
@@ -14,6 +14,8 @@ const Login = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [open, setOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState([]);
 
   const handleGoogleLogin = () => {
     window.location.href = `${serverapiUrl}/auth/google`;
@@ -33,23 +35,52 @@ const Login = () => {
       const data = await response.json();
       if (data.success && data.user) {
         localStorage.setItem("token", data.user);
-
-        alert("Login successful");
-        navigate("/");
+        setAlertMessage([true, "Login successful"]);
+        setOpen(true);
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
       } else {
-        alert(data.message || "Unknown error");
+        setAlertMessage([
+          false,
+          data.message || "Internal error wait for sometime",
+        ]);
+        setOpen(true);
       }
     } catch (err) {
-      alert("Login failed: " + err.message);
+      setAlertMessage([false, "Login failed: " + err.message]);
+      setOpen(true);
     }
   }
 
   return (
     <div className="LoginPage">
+      <Box sx={{ width: "80vh", marginBottom: "1vh" }}>
+        <Collapse in={open}>
+          <Alert
+            severity={alertMessage[0] ? "success" : "error"}
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setOpen(false); // Closes the alert when close icon is clicked
+                }}
+              >
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
+            }
+            sx={{ mb: 2 }} // Styling for spacing
+          >
+            {alertMessage[1]} {/* Displays alert message */}
+          </Alert>
+        </Collapse>
+      </Box>
       <div className="LoginContainer">
         <div className="LogoContainer">
-          <img src={NovicLogo} alt="NovicLogo" className="Logo" />
-          <img src={NovicEmblem} alt="Novic" className="emblem" />
+          <img src={NovicLogo} alt="Novic Logo" className="Logo" />
+          <img src={NovicEmblem} alt="Novic Emblem" className="emblem" />
         </div>
         <form onSubmit={userLogin}>
           <div className="input-fields">
@@ -77,25 +108,30 @@ const Login = () => {
           </div>
         </form>
 
-        <div class="separator">
-          <span class="separator-text">OR</span>
+        <div className="separator">
+          <span className="separator-text">OR</span>
         </div>
 
         <div className="LoginOptions">
           <div onClick={handleGoogleLogin}>
-            <img className="Options" src={GoogleLogo}></img>
+            <img className="Options" src={GoogleLogo} alt="Google Login" />
           </div>
 
           <div>
-            <img className="Options" src={MicrosoftLogo}></img>
+            <img
+              className="Options"
+              src={MicrosoftLogo}
+              alt="Microsoft Login"
+            />
           </div>
         </div>
 
         <div className="NewUser">
-          New User ?{" "}
-          <span className="RegisterURl">
-            {" "}
-            <Link to="/signin">Register</Link>
+          New User?{" "}
+          <span>
+            <Link to="/signin" className="RegisterURL">
+              Register
+            </Link>
           </span>
         </div>
       </div>

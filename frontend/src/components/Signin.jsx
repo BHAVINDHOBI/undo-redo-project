@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import NovicEmblem from "../assets/NoviceFigma.png";
-import NovicLogo from "../assets/NovicLogo.png";
-import GoogleLogo from "../assets/Google.svg";
-
-import MicrosoftLogo from "../assets/Microsoft Logo.svg";
+import NovicEmblem from "../assets/Application_Image/NoviceFigma.png";
+import NovicLogo from "../assets/Application_Image/NovicLogo.png";
+import GoogleLogo from "../assets/Application_Image/Google.svg";
+import MicrosoftLogo from "../assets/Application_Image/Microsoft_Logo.svg";
 import "../styles/Signin.css";
+import { Box, Alert, IconButton, Collapse } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 const serverapiUrl = import.meta.env.VITE_API_URL;
 
@@ -14,6 +15,8 @@ const Signin = () => {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [open, setOpen] = useState(false);
+  const [alertMessage, setAlertMessage] = useState([]);
 
   const handleGoogleSignIn = () => {
     window.location.href = `${serverapiUrl}/auth/google`;
@@ -34,18 +37,48 @@ const Signin = () => {
 
       if (data.success) {
         localStorage.setItem("token", data.user);
-        alert("Registration  successful");
-        navigate("/");
+        setAlertMessage([true, "Registration  successful"]);
+        setOpen(true);
+        setTimeout(() => {
+          navigate("/");
+        }, 2000);
       } else {
-        alert(data.message || "Unknown error");
+        setAlertMessage([
+          false,
+          data.message || "Internal error wait for sometime",
+        ]);
+        setOpen(true);
       }
     } catch (err) {
-      alert("Registration failed: " + err.message);
+      setAlertMessage([false, "Registration failed: " + err.message]);
+      setOpen(true);
     }
   }
 
   return (
     <div className="SigninPage">
+      <Box sx={{ width: "80vh", marginBottom: "1vh" }}>
+        <Collapse in={open}>
+          <Alert
+            severity={alertMessage[0] ? "success" : "error"}
+            action={
+              <IconButton
+                aria-label="close"
+                color="inherit"
+                size="small"
+                onClick={() => {
+                  setOpen(false); // Closes the alert when close icon is clicked
+                }}
+              >
+                <CloseIcon fontSize="inherit" />
+              </IconButton>
+            }
+            sx={{ mb: 2 }} // Styling for spacing
+          >
+            {alertMessage[1]} {/* Displays alert message */}
+          </Alert>
+        </Collapse>
+      </Box>
       <div className="SigninContainer">
         <div className="LogoContainer">
           <img src={NovicLogo} alt="NovicLogo" className="Logo" />
