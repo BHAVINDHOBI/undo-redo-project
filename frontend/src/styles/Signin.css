@@ -115,15 +115,15 @@
 }
 
 @media (max-width: 1080px) {
-  .LoginContainer {
+  .SigninContainer {
     width: 80vw;
     height: 70vh;
     justify-content: center;
     align-items: center;
   }
 
-  .LoginContainer .emblem,
-  .LoginContainer .Logo {
+  .SigninContainer .emblem,
+  .SigninContainer .Logo {
     height: 70px;
   }
 
@@ -141,23 +141,18 @@
     width: 35px;
     height: 35px;
   }
-
-  .NewUser {
-    font-size: 25px;
-    padding-top: 25px;
-  }
 }
 
 @media (max-width: 768px) {
-  .LoginContainer {
+  .SigninContainer {
     width: 80vw;
     height: 70vh;
     justify-content: center;
     align-items: center;
   }
 
-  .LoginContainer .emblem,
-  .LoginContainer .Logo {
+  .SigninContainer .emblem,
+  .SigninContainer .Logo {
     height: 70px;
   }
 
@@ -175,21 +170,17 @@
     width: 35px;
     height: 35px;
   }
-
-  .NewUser {
-    font-size: 16px;
-  }
 }
 
 @media (max-width: 480px) {
-  .LoginContainer {
+  .SigninContainer {
     width: 85vw;
     height: 70vh;
     gap: 25px;
   }
 
-  .LoginContainer .emblem,
-  .LoginContainer .Logo {
+  .SigninContainer .emblem,
+  .SigninContainer .Logo {
     height: 50px;
   }
 
@@ -206,9 +197,5 @@
   .Options {
     width: 35px;
     height: 35px;
-  }
-
-  .NewUser {
-    font-size: 16px;
   }
 }

@@ -9,6 +9,7 @@ import {
 import Login from "./components/Login";
 import Signin from "./components/Signin";
 import MainPage from "./components/MainPage";
+import DrawerTest from "./components/drawertest";
 
 const App = () => {
   const TokenHandler = () => {
@@ -35,6 +36,7 @@ const App = () => {
           <Route path="/login" Component={Login} />
           <Route path="/signin" Component={Signin} />
           <Route path="/" Component={MainPage} />
+          <Route path="/drawer" Component={DrawerTest} />
         </Routes>
       </Router>
     </>

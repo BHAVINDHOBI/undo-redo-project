@@ -24,6 +24,8 @@ import Logout from "./AppBar_Image/logout.svg";
 import NoviceLogo from "./NovicLogo.png";
 import NoviceFigma from "./NoviceFigma.png";
 import Italic from "./ToolBar_Image/Italic.svg";
+import Cross from "./cross.svg";
+import UserFiles from "./UserFiles.svg";
 
 const ToolBarImage = {
   Undo: Undo,
@@ -52,6 +54,8 @@ const ToolBarImage = {
   NoviceFigma: NoviceFigma,
   NoviceLogo: NoviceLogo,
   Italic: Italic,
+  Cross: Cross,
+  UserFiles: UserFiles,
 };
 
 export default ToolBarImage;

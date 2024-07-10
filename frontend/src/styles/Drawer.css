@@ -1,0 +1,76 @@
+.drawer {
+  width: 240px;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: -240px;
+  background-color: #333;
+  color: #fff;
+  overflow-x: hidden;
+  transition: 0.3s;
+  padding-top: 20px;
+}
+
+.drawer.open {
+  left: 0;
+}
+
+.drawer a {
+  padding: 10px 15px;
+  text-decoration: none;
+  font-size: 18px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.drawer a:hover {
+  color: #f1f1f1;
+}
+
+.main-content {
+  margin-left: 0;
+  transition: margin-left 0.3s;
+}
+
+.main-content.shifted {
+  margin-left: 240px;
+}
+
+.drawer-header {
+  padding: 10px 15px;
+  font-size: 20px;
+  background-color: white;
+  display: flex;
+}
+
+.drawer-header span {
+  font-weight: bold;
+}
+
+.toggle-button {
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  background-color: #d9d9d9;
+  color: black;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.toggle-button span {
+  font-weight: bold;
+}
+.toggle-button img {
+  margin-right: 5px;
+}
+
+.Files {
+  color: black;
+  padding-left: 8px;
+  padding-right: 105px;
+}
