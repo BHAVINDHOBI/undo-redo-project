@@ -1,0 +1,7 @@
+.TextEditor {
+  width: 100%;
+  min-height: 100vh;
+  background-color: aliceblue;
+  padding-left: 2vh;
+  outline: none;
+}
