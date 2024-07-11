@@ -24,8 +24,8 @@ import Logout from "./AppBar_Image/logout.svg";
 import NoviceLogo from "./Application_Image/NovicLogo.png";
 import NoviceFigma from "./Application_Image/NoviceFigma.png";
 import Italic from "./ToolBar_Image/Italic.svg";
-import Cross from "./cross.svg";
-import UserFiles from "./UserFiles.svg";
+import Cross from "./Drawer_Image/cross.svg";
+import UserFiles from "./Drawer_Image/UserFiles.svg";
 
 const ToolBarImage = {
   Undo: Undo,
