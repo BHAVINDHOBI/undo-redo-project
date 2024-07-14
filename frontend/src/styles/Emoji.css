@@ -1,0 +1,15 @@
+button {
+  outline: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.emoji-picker {
+  position: absolute;
+  z-index: 1000; /* Ensure it stays above other elements */
+}
+
+.emoji-button {
+  position: relative;
+}

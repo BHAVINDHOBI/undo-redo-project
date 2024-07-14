@@ -26,6 +26,7 @@ import NoviceFigma from "./Application_Image/NoviceFigma.png";
 import Italic from "./ToolBar_Image/Italic.svg";
 import Cross from "./Drawer_Image/cross.svg";
 import UserFiles from "./Drawer_Image/UserFiles.svg";
+import SmileFace from "./ToolBar_Image/face-smile-regular.svg";
 
 const ToolBarImage = {
   Undo: Undo,
@@ -56,6 +57,7 @@ const ToolBarImage = {
   Italic: Italic,
   Cross: Cross,
   UserFiles: UserFiles,
+  SmileFace: SmileFace,
 };
 
 export default ToolBarImage;

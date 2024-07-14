@@ -2,13 +2,18 @@ import React from "react";
 import ToolBarImage from "../assets/Utility.js";
 import "../styles/TextEditorToolbar.css";
 import { FormControl, Select, MenuItem } from "@mui/material";
+import Emoji from "./Emoji.jsx";
+import { undo, redo } from "../redux/actions.js";
+import { useDispatch } from "react-redux";
 
-const TextEditorToolbar = () => {
+const TextEditorToolbar = ({ editorRef }) => {
   const [screenSize, setScreenSize] = React.useState("");
   const [font, setFont] = React.useState("");
   const [fontSize, setFontSize] = React.useState("");
   const [alignment, setAlignment] = React.useState("");
   const [lineSpacing, setLineSpacing] = React.useState("");
+
+  const dispatch = useDispatch();
 
   const handleScreenChange = (event) => {
     setScreenSize(event.target.value);
@@ -33,10 +38,10 @@ const TextEditorToolbar = () => {
   return (
     <div className="Toolbar">
       <div className="undo-redo_style">
-        <div className="undo-btn">
+        <div className="undo-btn" onClick={() => dispatch(undo())}>
           <img src={ToolBarImage.Undo} alt="Undo" />
         </div>
-        <div className="redo-btn">
+        <div className="redo-btn" onClick={() => dispatch(redo())}>
           <img src={ToolBarImage.Redo} alt="Redo" />
         </div>
       </div>
@@ -158,6 +163,10 @@ const TextEditorToolbar = () => {
           </MenuItem>
         </Select>
       </FormControl>
+
+      <div className="emoji-btn">
+        <Emoji editorRef={editorRef} />
+      </div>
 
       <div className="table-btn">
         <img src={ToolBarImage.Table} alt="Table" />
