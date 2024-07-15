@@ -1,3 +1,4 @@
+// redux/store.js
 import { createStore } from "redux";
 import editorReducer from "./reducers";
 

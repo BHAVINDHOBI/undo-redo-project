@@ -2,11 +2,11 @@ import React from "react";
 import ToolBarImage from "../assets/Utility.js";
 import "../styles/TextEditorToolbar.css";
 import { FormControl, Select, MenuItem } from "@mui/material";
-import Emoji from "./Emoji.jsx";
 import { undo, redo } from "../redux/actions.js";
 import { useDispatch } from "react-redux";
+import Emoji from "./Emoji.jsx";
 
-const TextEditorToolbar = ({ editorRef }) => {
+const TextEditorToolbar = ({ editorRef, execCommand }) => {
   const [screenSize, setScreenSize] = React.useState("");
   const [font, setFont] = React.useState("");
   const [fontSize, setFontSize] = React.useState("");
@@ -21,18 +21,17 @@ const TextEditorToolbar = ({ editorRef }) => {
 
   const handleFont = (event) => {
     setFont(event.target.value);
+    execCommand("fontName", event.target.value);
   };
 
   const handleFontSize = (event) => {
     setFontSize(event.target.value);
+    execCommand("fontSize", event.target.value);
   };
 
   const handleAlignment = (event) => {
     setAlignment(event.target.value);
-  };
-
-  const handleLineSpacing = (event) => {
-    setLineSpacing(event.target.value);
+    execCommand(event.target.value);
   };
 
   return (
@@ -45,16 +44,16 @@ const TextEditorToolbar = ({ editorRef }) => {
           <img src={ToolBarImage.Redo} alt="Redo" />
         </div>
       </div>
-      <div className="bold-btn">
+      <div className="bold-btn" onClick={() => execCommand("bold")}>
         <img src={ToolBarImage.Bold} alt="Bold" />
       </div>
-      <div className="italic-btn">
+      <div className="italic-btn" onClick={() => execCommand("italic")}>
         <img src={ToolBarImage.Italic} alt="Italic" />
       </div>
-      <div className="underline-btn">
+      <div className="underline-btn" onClick={() => execCommand("underline")}>
         <img src={ToolBarImage.Underline} alt="Underline" />
       </div>
-      <div className="strike-btn">
+      <div className="strike-btn" onClick={() => execCommand("strikeThrough")}>
         <img src={ToolBarImage.StrikeThrough} alt="StrikeThrough" />
       </div>
       <div className="highlight-btn">
@@ -132,17 +131,26 @@ const TextEditorToolbar = ({ editorRef }) => {
         </FormControl>
       </div>
 
-      <div className="bullets-btn">
+      <div
+        className="bullets-btn"
+        onClick={() => execCommand("insertUnorderedList")}
+      >
         <img src={ToolBarImage.Bullets} alt="Bullets" />
         <img src={ToolBarImage.Arrow} alt="Arrow" />
       </div>
 
-      <div className="bullets_numbers-btn">
+      <div
+        className="bullets_numbers-btn"
+        onClick={() => execCommand("insertOrderedList")}
+      >
         <img src={ToolBarImage.Bullet_Numbers} alt="Bullet_Numbers" />
         <img src={ToolBarImage.Arrow} alt="Arrow" />
       </div>
 
-      <div className="lineSpacing-btn">
+      <div
+        className="lineSpacing-btn"
+        onClick={() => execCommand("justifyFull")}
+      >
         <img src={ToolBarImage.Line_Spacing} alt="Line_Spacing" />
         <img src={ToolBarImage.Arrow} alt="Arrow" />
       </div>
@@ -152,13 +160,13 @@ const TextEditorToolbar = ({ editorRef }) => {
           <MenuItem value="">
             <img src={ToolBarImage.AlignLeft} alt="AlignLeft" />
           </MenuItem>
-          <MenuItem value={ToolBarImage.AlignCenter}>
+          <MenuItem value="justifyCenter">
             <img src={ToolBarImage.AlignCenter} alt="AlignCenter" />
           </MenuItem>
-          <MenuItem value={ToolBarImage.AlignRight}>
+          <MenuItem value="justifyRight">
             <img src={ToolBarImage.AlignRight} alt="AlignRight" />
           </MenuItem>
-          <MenuItem value={ToolBarImage.JustifyText}>
+          <MenuItem value="justifyFull">
             <img src={ToolBarImage.JustifyText} alt="JustifyText" />
           </MenuItem>
         </Select>
@@ -168,25 +176,25 @@ const TextEditorToolbar = ({ editorRef }) => {
         <Emoji editorRef={editorRef} />
       </div>
 
-      <div className="table-btn">
-        <img src={ToolBarImage.Table} alt="Table" />
+      <div
+        className="tableInsert-btn"
+        onClick={() => execCommand("insertTable")}
+      >
+        <img src={ToolBarImage.Table} alt="InsertTable" />
+        <img src={ToolBarImage.Arrow} alt="Arrow" />
       </div>
 
-      <div className="find_replace-btn">
-        <img src={ToolBarImage.Find_Replace} alt="Find_Replace" />
+      <div className="findReplace-btn" onClick={() => execCommand("find")}>
+        <img src={ToolBarImage.Find_Replace} alt="Find" />
       </div>
 
-      <div className="upload_btn">
-        <img src={ToolBarImage.Upload} alt="Upload" />
-      </div>
-
-      <div className="print_btn">
+      <div className="print-btn" onClick={() => window.print()}>
         <img src={ToolBarImage.Print} alt="Print" />
       </div>
 
       <div className="download-btn">
-        <span>Download</span>
-        <img src={ToolBarImage.Download} alt="Download" />
+        Download
+        <img src={ToolBarImage.Download} alt="Document_Download" />
       </div>
     </div>
   );

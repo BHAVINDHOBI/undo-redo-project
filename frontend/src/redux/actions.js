@@ -1,3 +1,5 @@
+// redux/actions.js
+
 // Action Types
 export const ADD_TO_HISTORY = "ADD_TO_HISTORY";
 export const UNDO = "UNDO";

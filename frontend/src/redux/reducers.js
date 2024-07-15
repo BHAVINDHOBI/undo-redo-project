@@ -3,18 +3,17 @@ import { ADD_TO_HISTORY, UNDO, REDO } from "./actions";
 const MAX_HISTORY_LENGTH = 50;
 
 const initialState = {
-  inputValue: "",
-  history: [""],
+  inputValue: { value: "", selection: null },
+  history: [{ value: "", selection: null }],
   historyIndex: 0,
 };
 
 const editorReducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_TO_HISTORY:
-      const newHistory = state.history.slice(0, state.historyIndex + 1);
+      let newHistory = state.history.slice(0, state.historyIndex + 1);
       newHistory.push(action.payload);
 
-      // Limit history to 50 entries
       if (newHistory.length > MAX_HISTORY_LENGTH) {
         newHistory = newHistory.slice(newHistory.length - MAX_HISTORY_LENGTH);
       }
