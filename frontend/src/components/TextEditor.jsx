@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { debounce } from "lodash";
+import DOMPurify from "dompurify";
 import "../styles/TextEditor.css";
 import { addToHistory, undo, redo } from "../redux/actions";
 import TextEditorToolbar from "./TextEditorToolbar";
@@ -69,8 +70,17 @@ const TextEditor = () => {
     sel.addRange(range);
   };
 
+  const sanitizeContent = (content) => {
+    // Sanitize the content using DOMPurify to allow basic formatting tags
+    return DOMPurify.sanitize(content, {
+      ALLOWED_TAGS: ["b", "i", "u", "strike", "br", "#text"], // Allow basic formatting tags
+      ALLOWED_ATTR: [], // Disallow all attributes
+    });
+  };
+
   const handleInput = debounce((event) => {
     let value = editorRef.current.innerHTML;
+    value = sanitizeContent(value); // Sanitize the content
     const selection = saveSelection(editorRef.current);
     dispatch(addToHistory({ value: value || "", selection }));
   }, 300);
@@ -111,6 +121,12 @@ const TextEditor = () => {
     editorRef.current.focus();
   };
 
+  const handlePaste = (event) => {
+    event.preventDefault();
+    const text = (event.clipboardData || window.clipboardData).getData("text");
+    document.execCommand("insertText", false, sanitizeContent(text));
+  };
+
   return (
     <div className="TextEditorContainer">
       <TextEditorToolbar editorRef={editorRef} execCommand={execCommand} />
@@ -119,7 +135,7 @@ const TextEditor = () => {
         contentEditable
         ref={editorRef}
         onInput={handleInput}
-        onPaste={handleInput}
+        onPaste={handlePaste}
         suppressContentEditableWarning={true}
       ></div>
     </div>
