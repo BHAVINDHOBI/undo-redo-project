@@ -1,12 +1,14 @@
 import React from "react";
-import SidebarComponent from "./Drawer";
+import "../styles/Test.css";
+import TableEditor from "./TableEditor";
 
-const Test = () => {
+function Test() {
   return (
-    <div>
-      <SidebarComponent />
+    <div className="Test">
+      <h1>Table Editor</h1>
+      <TableEditor />
     </div>
   );
-};
+}
 
 export default Test;

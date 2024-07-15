@@ -1,0 +1,67 @@
+table {
+  border-collapse: collapse;
+  width: auto;
+}
+
+td,
+th {
+  border: 1px solid;
+  position: relative;
+  min-width: 100px;
+  height: 30px;
+  word-wrap: break-word;
+  text-align: left;
+  padding: 5px;
+}
+
+input {
+  width: 100%;
+  border: none;
+  outline: none;
+}
+
+button {
+  margin: 5px;
+}
+
+.insert-table-button {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.table-icon {
+  width: 20px;
+  margin-right: 5px;
+}
+
+.content-editable {
+  width: 100%;
+  min-height: 100px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin: 20px 0;
+}
+
+.ReactModal__Overlay {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+}
+
+.ReactModal__Content {
+  top: 50% !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: auto !important;
+  margin-right: -50% !important;
+  transform: translate(-50%, -50%) !important;
+}
+
+.Header {
+  display: flex;
+  gap: 10px;
+}
+
+.Header input {
+  width: 18px;
+  height: 18px;
+}
