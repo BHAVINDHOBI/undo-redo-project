@@ -1,109 +1,99 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { debounce } from "lodash";
+import DOMPurify from "dompurify";
 import "../styles/TextEditor.css";
+import { addToHistory, undo, redo } from "../redux/actions";
+import TextEditorToolbar from "./TextEditorToolbar";
 
 const TextEditor = () => {
-  const [inputValue, setInputValue] = useState("");
-  const [history, setHistory] = useState([""]);
-  const [historyIndex, setHistoryIndex] = useState(0);
-  const inputRef = useRef(null);
+  const inputValue = useSelector((state) => state.inputValue);
+  const dispatch = useDispatch();
+  const editorRef = useRef(null);
 
-  const specialCharacters = [
-    "!",
-    "@",
-    "#",
-    "$",
-    "%",
-    "^",
-    "&",
-    "*",
-    "(",
-    ")",
-    "-",
-    "_",
-    "=",
-    "+",
-    "{",
-    "}",
-    "[",
-    "]",
-    ":",
-    ";",
-    "'",
-    '"',
-    ",",
-    "<",
-    ".",
-    ">",
-    "?",
-    "/",
-    "\\",
-    "|",
-    "~",
-    "`",
-    " ",
-  ];
+  const saveSelection = (containerEl) => {
+    let selection = window.getSelection();
+    if (selection.rangeCount === 0) return null;
+    let range = selection.getRangeAt(0);
+    let preSelectionRange = range.cloneRange();
+    preSelectionRange.selectNodeContents(containerEl);
+    preSelectionRange.setEnd(range.startContainer, range.startOffset);
+    let start = preSelectionRange.toString().length;
 
-  // Update history when input value changes
-  useEffect(() => {
-    if (history[historyIndex] !== inputValue) {
-      const newHistory = history.slice(0, historyIndex + 1);
-      newHistory.push(inputValue);
-      setHistory(newHistory);
-      setHistoryIndex(historyIndex + 1);
-    }
-  }, [inputValue]);
-
-  const handleUndo = () => {
-    if (historyIndex >= 0) {
-      setHistoryIndex(historyIndex - 1);
-      setInputValue(history[historyIndex - 1]);
-    }
+    return {
+      start: start,
+      end: start + range.toString().length,
+    };
   };
 
-  const handleRedo = () => {
-    if (historyIndex <= history.length - 1) {
-      setHistoryIndex(historyIndex + 1);
-      setInputValue(history[historyIndex + 1]);
-    }
-  };
+  const restoreSelection = (containerEl, savedSel) => {
+    if (!savedSel) return;
+    let charIndex = 0,
+      range = document.createRange();
+    range.setStart(containerEl, 0);
+    range.collapse(true);
+    let nodeStack = [containerEl],
+      node,
+      foundStart = false,
+      stop = false;
 
-  const handleChange = (event) => {
-    const value = event.target.value;
-    const lastChar = value[value.length - 1];
-    const isSpecialChar = specialCharacters.includes(lastChar);
-
-    if (isSpecialChar || value === "") {
-      setInputValue(value);
-      const newHistory = history.slice(0, historyIndex + 1);
-      newHistory.push(value);
-      setHistory(newHistory);
-      setHistoryIndex(historyIndex + 1);
-    } else {
-      setInputValue(value);
-      const lastEntry = history[history.length - 1];
-      if (!specialCharacters.includes(lastEntry[lastEntry.length - 1])) {
-        const newHistory = history.slice(0, historyIndex + 1);
-        newHistory[newHistory - 1] = value;
-        setHistory(newHistory);
+    while (!stop && (node = nodeStack.pop())) {
+      if (node.nodeType === 3) {
+        let nextCharIndex = charIndex + node.length;
+        if (
+          !foundStart &&
+          savedSel.start >= charIndex &&
+          savedSel.start <= nextCharIndex
+        ) {
+          range.setStart(node, savedSel.start - charIndex);
+          foundStart = true;
+        }
+        if (
+          foundStart &&
+          savedSel.end >= charIndex &&
+          savedSel.end <= nextCharIndex
+        ) {
+          range.setEnd(node, savedSel.end - charIndex);
+          stop = true;
+        }
+        charIndex = nextCharIndex;
       } else {
-        const newHistory = history.slice(0, historyIndex + 1);
-        newHistory.push(value);
-        setHistory(newHistory);
-        setHistoryIndex(newHistory.length - 1);
+        let i = node.childNodes.length;
+        while (i--) {
+          nodeStack.push(node.childNodes[i]);
+        }
       }
     }
+
+    let sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
   };
 
-  // Handle key events for undo and redo
+  const sanitizeContent = (content) => {
+    // Sanitize the content using DOMPurify to allow basic formatting tags
+    return DOMPurify.sanitize(content, {
+      ALLOWED_TAGS: ["b", "i", "u", "strike", "br", "#text"], // Allow basic formatting tags
+      ALLOWED_ATTR: [], // Disallow all attributes
+    });
+  };
+
+  const handleInput = debounce((event) => {
+    let value = editorRef.current.innerHTML;
+    value = sanitizeContent(value); // Sanitize the content
+    const selection = saveSelection(editorRef.current);
+    dispatch(addToHistory({ value: value || "", selection }));
+  }, 300);
+
   useEffect(() => {
     const handleKeyDown = (event) => {
-      if (inputRef.current && inputRef.current === document.activeElement) {
-        if (event.ctrlKey && (event.key === "z" || event.key === "Z")) {
+      if (editorRef.current && editorRef.current === document.activeElement) {
+        if (event.ctrlKey && event.key === "z") {
           event.preventDefault();
-          handleUndo();
-        } else if ((event.ctrlKey && event.key === "y") || event.key === "Y") {
+          dispatch(undo());
+        } else if (event.ctrlKey && event.key === "y") {
           event.preventDefault();
-          handleRedo();
+          dispatch(redo());
         }
       }
     };
@@ -112,17 +102,43 @@ const TextEditor = () => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [handleUndo, handleRedo]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (editorRef.current && editorRef.current.innerHTML !== inputValue.value) {
+      editorRef.current.innerHTML = inputValue.value || "";
+      restoreSelection(editorRef.current, inputValue.selection);
+    }
+  }, [inputValue]);
+
+  const execCommand = (command, value = null) => {
+    const sel = window.getSelection();
+    if (sel.rangeCount > 0) {
+      const range = sel.getRangeAt(0);
+      const parentNode = range.commonAncestorContainer.parentNode;
+      document.execCommand(command, false, value);
+    }
+    editorRef.current.focus();
+  };
+
+  const handlePaste = (event) => {
+    event.preventDefault();
+    const text = (event.clipboardData || window.clipboardData).getData("text");
+    document.execCommand("insertText", false, sanitizeContent(text));
+  };
 
   return (
-    <div
-      className="TextEditor"
-      type="text"
-      contentEditable
-      value={inputValue}
-      onChange={handleChange}
-      ref={inputRef}
-    ></div>
+    <div className="TextEditorContainer">
+      <TextEditorToolbar editorRef={editorRef} execCommand={execCommand} />
+      <div
+        className="TextEditor"
+        contentEditable
+        ref={editorRef}
+        onInput={handleInput}
+        onPaste={handlePaste}
+        suppressContentEditableWarning={true}
+      ></div>
+    </div>
   );
 };
 

@@ -18,17 +18,77 @@
 }
 
 .undo-btn {
-  border: 1px solid;
-  box-sizing: border-box;
-  border-color: #b5c0d0;
   border-radius: 3px;
   padding: 0 2.5px;
   cursor: pointer;
-  transition: 0.5s ease;
+  transition: 0.3s ease;
 }
 
-.undo-btn :hover {
+.undo-btn:hover {
+  border: 1px solid;
   background-color: #e7e7e7;
+  border-color: #b5c0d0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.redo-btn {
+  border-radius: 3px;
+  padding: 0 2.5px;
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.redo-btn:hover {
+  border: 1px solid;
+  background-color: #e7e7e7;
+  border-color: #b5c0d0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.bold-btn {
+  border-radius: 3px;
+  padding: 0 2.5px;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.bold-btn:hover {
+  border: 1px solid;
+  background-color: #e7e7e7;
+  border-color: #b5c0d0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.italic-btn {
+  border-radius: 3px;
+  padding: 0 2.5px;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background-color 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.italic-btn:hover {
+  border: 1px solid;
+  background-color: #e7e7e7;
+  border-color: #b5c0d0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.underline-btn {
+  border-radius: 3px;
+  padding: 0 2.5px;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background-color 0.3s ease,
+    box-shadow 0.3s ease;
+  outline: none;
+}
+
+.underline-btn:hover {
+  border: 1px solid;
+  background-color: #e7e7e7;
+  border-color: #b5c0d0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .font_style {
