@@ -1,0 +1,15 @@
+.file-upload-container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.file-content {
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  white-space: pre-wrap; /* Preserve whitespace */
+  font-family: monospace; /* Use a monospace font for text files */
+  min-height: 200px; /* Ensure the editable div has some height */
+}

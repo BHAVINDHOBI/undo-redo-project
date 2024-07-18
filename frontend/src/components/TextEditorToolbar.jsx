@@ -192,6 +192,10 @@ const TextEditorToolbar = ({ editorRef, execCommand }) => {
         <img src={ToolBarImage.Print} alt="Print" />
       </div>
 
+      <div className="upload-btn">
+        <img src={ToolBarImage.Upload} alt="Upload" />
+      </div>
+
       <div className="download-btn">
         Download
         <img src={ToolBarImage.Download} alt="Document_Download" />
