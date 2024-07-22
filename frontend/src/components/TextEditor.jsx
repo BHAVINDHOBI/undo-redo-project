@@ -71,19 +71,23 @@ const TextEditor = () => {
   };
 
   const sanitizeContent = (content) => {
-    // Sanitize the content using DOMPurify to allow basic formatting tags
     return DOMPurify.sanitize(content, {
-      ALLOWED_TAGS: ["b", "i", "u", "strike", "br", "#text"], // Allow basic formatting tags
-      ALLOWED_ATTR: [], // Disallow all attributes
+      ALLOWED_TAGS: ["b", "i", "u", "strike", "br", "#text"],
+      ALLOWED_ATTR: [],
     });
   };
 
   const handleInput = debounce((event) => {
     let value = editorRef.current.innerHTML;
-    value = sanitizeContent(value); // Sanitize the content
+    value = sanitizeContent(value);
     const selection = saveSelection(editorRef.current);
     dispatch(addToHistory({ value: value || "", selection }));
   }, 300);
+
+  const setFileContent = (content) => {
+    editorRef.current.innerHTML = sanitizeContent(content);
+    dispatch(addToHistory({ value: content || "", selection: null }));
+  };
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -129,7 +133,11 @@ const TextEditor = () => {
 
   return (
     <div className="TextEditorContainer">
-      <TextEditorToolbar editorRef={editorRef} execCommand={execCommand} />
+      <TextEditorToolbar
+        editorRef={editorRef}
+        execCommand={execCommand}
+        setFileContent={setFileContent}
+      />
       <div
         className="TextEditor"
         contentEditable

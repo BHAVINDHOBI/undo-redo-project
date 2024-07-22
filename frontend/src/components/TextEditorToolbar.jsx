@@ -5,8 +5,9 @@ import { FormControl, Select, MenuItem } from "@mui/material";
 import { undo, redo } from "../redux/actions.js";
 import { useDispatch } from "react-redux";
 import Emoji from "./Emoji.jsx";
+import Upload from "./Upload";
 
-const TextEditorToolbar = ({ editorRef, execCommand }) => {
+const TextEditorToolbar = ({ editorRef, execCommand, setFileContent }) => {
   const [screenSize, setScreenSize] = React.useState("");
   const [font, setFont] = React.useState("");
   const [fontSize, setFontSize] = React.useState("");
@@ -32,6 +33,12 @@ const TextEditorToolbar = ({ editorRef, execCommand }) => {
   const handleAlignment = (event) => {
     setAlignment(event.target.value);
     execCommand(event.target.value);
+  };
+
+  const fileInputRef = React.useRef(null);
+
+  const handleButtonClick = () => {
+    fileInputRef.current.click();
   };
 
   return (
@@ -192,8 +199,9 @@ const TextEditorToolbar = ({ editorRef, execCommand }) => {
         <img src={ToolBarImage.Print} alt="Print" />
       </div>
 
-      <div className="upload-btn">
+      <div className="upload-btn" onClick={handleButtonClick}>
         <img src={ToolBarImage.Upload} alt="Upload" />
+        <Upload fileInputRef={fileInputRef} setFileContent={setFileContent} />
       </div>
 
       <div className="download-btn">

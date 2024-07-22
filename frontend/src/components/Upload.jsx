@@ -1,11 +1,8 @@
-import React, { useState, useRef, useEffect } from "react";
+import React from "react";
 import mammoth from "mammoth";
 import "../styles/Upload.css";
 
-const Upload = () => {
-  const [fileContent, setFileContent] = useState("");
-  const contentEditableRef = useRef(null);
-
+const Upload = ({ fileInputRef, setFileContent }) => {
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
@@ -38,32 +35,14 @@ const Upload = () => {
     }
   };
 
-  const handleContentChange = () => {
-    setFileContent(contentEditableRef.current.innerText);
-  };
-
-  useEffect(() => {
-    if (
-      contentEditableRef.current &&
-      contentEditableRef.current.innerText !== fileContent
-    ) {
-      contentEditableRef.current.innerText = fileContent;
-    }
-  }, [fileContent]);
-
   return (
-    <div className="file-upload-container">
-      <h1>File Upload and Edit</h1>
-      <input type="file" accept=".txt,.doc,.docx" onChange={handleFileUpload} />
-      <div
-        id="fileContent"
-        className="file-content"
-        contentEditable="true"
-        onInput={handleContentChange}
-        ref={contentEditableRef}
-        suppressContentEditableWarning={true}
-      ></div>
-    </div>
+    <input
+      type="file"
+      accept=".txt,.doc,.docx"
+      onChange={handleFileUpload}
+      ref={fileInputRef}
+      style={{ display: "none" }}
+    />
   );
 };
 
