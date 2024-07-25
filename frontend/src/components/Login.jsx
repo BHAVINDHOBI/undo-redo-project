@@ -21,6 +21,10 @@ const Login = () => {
     window.location.href = `${serverapiUrl}/auth/google`;
   };
 
+  const handleFacebookLogin = () => {
+    window.location.href = `${serverapiUrl}/auth/facebook`;
+  };
+
   async function userLogin(e) {
     e.preventDefault();
     try {
@@ -117,11 +121,8 @@ const Login = () => {
             <img className="Options" src={GoogleLogo} alt="Google Login" />
           </div>
 
-          <div>
-            <img
-              className="Options"
-              src={MicrosoftLogo}
-              alt="Microsoft Login"
+          <div onClick={handleFacebookLogin}>
+            <img className="Options" src={MicrosoftLogo} alt="Microsoft Login"
             />
           </div>
         </div>

@@ -19,6 +19,11 @@ const userInfo = mongoose.Schema({
         unique: false,
         default:null,
     },
+    facebookId: {
+        type: String,
+        unique: false,
+        default:null,
+    },
     picture:{
         type: String,
         default:"https://images.pexels.com/photos/633432/pexels-photo-633432.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"

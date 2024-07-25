@@ -81,6 +81,15 @@ exports.gCallbacks = passport.authenticate("google", {
     failureMessage: "Failed to authenticate with Google",
 });
 
+// facebook
+exports.facebook = passport.authenticate("facebook", { scope: ['profile', 'email'] })
+
+exports.fbCallbacks =   passport.authenticate("facebook", {
+    failureRedirect:`${process.env.CLIENT_URL}/login`,
+    failureMessage: "Failed to authenticate with Facebook",
+}),
+
+
 
 exports.getUserData = async (req, res) => {
     try {

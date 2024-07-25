@@ -7,6 +7,7 @@ const session = require("express-session");
 const bodyParser = require('body-parser');
 
 const passportSetup = require("./config/passportConfig.js");
+const passportFBSetup = require("./config/passportFBConfig.js");
 const authRoutes = require("./routes/authRoutes.js");
 const apiRoutes = require("./routes/apiRoutes.js");
 
