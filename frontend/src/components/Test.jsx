@@ -1,12 +1,10 @@
 import React from "react";
 import "../styles/Test.css";
-
-import Upload from "./Upload";
-
+import TableEditor from "./TableEditor";
 function Test() {
   return (
     <div className="Test">
-      <Upload />
+      <TableEditor />
     </div>
   );
 }

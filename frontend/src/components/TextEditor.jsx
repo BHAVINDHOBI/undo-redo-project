@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { debounce } from "lodash";
 import DOMPurify from "dompurify";
 import "../styles/TextEditor.css";
 import { addToHistory, undo, redo } from "../redux/actions";
@@ -11,12 +10,12 @@ const TextEditor = () => {
   const dispatch = useDispatch();
   const editorRef = useRef(null);
 
-  const saveSelection = (containerEl) => {
+  const saveSelection = () => {
     let selection = window.getSelection();
     if (selection.rangeCount === 0) return null;
     let range = selection.getRangeAt(0);
     let preSelectionRange = range.cloneRange();
-    preSelectionRange.selectNodeContents(containerEl);
+    preSelectionRange.selectNodeContents(editorRef.current);
     preSelectionRange.setEnd(range.startContainer, range.startOffset);
     let start = preSelectionRange.toString().length;
 
@@ -26,13 +25,13 @@ const TextEditor = () => {
     };
   };
 
-  const restoreSelection = (containerEl, savedSel) => {
+  const restoreSelection = (savedSel) => {
     if (!savedSel) return;
     let charIndex = 0,
       range = document.createRange();
-    range.setStart(containerEl, 0);
+    range.setStart(editorRef.current, 0);
     range.collapse(true);
-    let nodeStack = [containerEl],
+    let nodeStack = [editorRef.current],
       node,
       foundStart = false,
       stop = false;
@@ -72,21 +71,36 @@ const TextEditor = () => {
 
   const sanitizeContent = (content) => {
     return DOMPurify.sanitize(content, {
-      ALLOWED_TAGS: ["b", "i", "u", "strike", "br", "#text"],
-      ALLOWED_ATTR: [],
+      ALLOWED_TAGS: [
+        "b",
+        "i",
+        "u",
+        "strike",
+        "br",
+        "#text",
+        "span",
+        "table",
+        "tr",
+        "td",
+        "th",
+        "font",
+      ],
+      ALLOWED_ATTR: ["style", "face", "size", "color"],
     });
   };
 
-  const handleInput = debounce((event) => {
+  const handleInput = () => {
     let value = editorRef.current.innerHTML;
     value = sanitizeContent(value);
-    const selection = saveSelection(editorRef.current);
+    const selection = saveSelection();
     dispatch(addToHistory({ value: value || "", selection }));
-  }, 300);
+  };
 
   const setFileContent = (content) => {
-    editorRef.current.innerHTML = sanitizeContent(content);
-    dispatch(addToHistory({ value: content || "", selection: null }));
+    const sanitizedContent = sanitizeContent(content);
+    editorRef.current.innerHTML = sanitizedContent;
+    const selection = saveSelection();
+    dispatch(addToHistory({ value: sanitizedContent || "", selection }));
   };
 
   useEffect(() => {
@@ -98,6 +112,19 @@ const TextEditor = () => {
         } else if (event.ctrlKey && event.key === "y") {
           event.preventDefault();
           dispatch(redo());
+        } else if (event.key === "Enter") {
+          event.preventDefault();
+          const sel = window.getSelection();
+          if (sel.rangeCount > 0) {
+            const range = sel.getRangeAt(0);
+            range.deleteContents();
+            const br = document.createElement("br");
+            range.insertNode(br);
+            range.setStartAfter(br);
+            sel.removeAllRanges();
+            sel.addRange(range);
+            handleInput();
+          }
         }
       }
     };
@@ -110,8 +137,9 @@ const TextEditor = () => {
 
   useEffect(() => {
     if (editorRef.current && editorRef.current.innerHTML !== inputValue.value) {
+      const selection = saveSelection();
       editorRef.current.innerHTML = inputValue.value || "";
-      restoreSelection(editorRef.current, inputValue.selection);
+      restoreSelection(selection);
     }
   }, [inputValue]);
 
@@ -119,7 +147,6 @@ const TextEditor = () => {
     const sel = window.getSelection();
     if (sel.rangeCount > 0) {
       const range = sel.getRangeAt(0);
-      const parentNode = range.commonAncestorContainer.parentNode;
       document.execCommand(command, false, value);
     }
     editorRef.current.focus();

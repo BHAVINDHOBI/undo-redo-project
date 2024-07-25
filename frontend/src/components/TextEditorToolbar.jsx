@@ -1,11 +1,12 @@
 import React from "react";
-import ToolBarImage from "../assets/Utility.js";
+import ToolBarImage from "../assets/Utility";
 import "../styles/TextEditorToolbar.css";
 import { FormControl, Select, MenuItem } from "@mui/material";
-import { undo, redo } from "../redux/actions.js";
+import { undo, redo } from "../redux/actions";
 import { useDispatch } from "react-redux";
-import Emoji from "./Emoji.jsx";
+import Emoji from "./Emoji";
 import Upload from "./Upload";
+import TableEditor from "./TableEditor";
 
 const TextEditorToolbar = ({ editorRef, execCommand, setFileContent }) => {
   const [screenSize, setScreenSize] = React.useState("");
@@ -15,6 +16,8 @@ const TextEditorToolbar = ({ editorRef, execCommand, setFileContent }) => {
   const [lineSpacing, setLineSpacing] = React.useState("");
 
   const dispatch = useDispatch();
+  const fileInputRef = React.useRef(null);
+  const tableEditorRef = React.useRef(null);
 
   const handleScreenChange = (event) => {
     setScreenSize(event.target.value);
@@ -35,10 +38,14 @@ const TextEditorToolbar = ({ editorRef, execCommand, setFileContent }) => {
     execCommand(event.target.value);
   };
 
-  const fileInputRef = React.useRef(null);
-
-  const handleButtonClick = () => {
+  const handleUpload = () => {
     fileInputRef.current.click();
+  };
+
+  const handleTableEditorOpen = () => {
+    if (tableEditorRef.current) {
+      tableEditorRef.current.insertTable();
+    }
   };
 
   return (
@@ -89,7 +96,6 @@ const TextEditorToolbar = ({ editorRef, execCommand, setFileContent }) => {
           <MenuItem value="300%">300%</MenuItem>
         </Select>
       </FormControl>
-
       <div className="font_style">
         <FormControl size="small">
           <Select
@@ -109,7 +115,6 @@ const TextEditorToolbar = ({ editorRef, execCommand, setFileContent }) => {
             <MenuItem value="Calibri">Calibri</MenuItem>
           </Select>
         </FormControl>
-
         <FormControl size="small">
           <Select
             onChange={handleFontSize}
@@ -137,7 +142,6 @@ const TextEditorToolbar = ({ editorRef, execCommand, setFileContent }) => {
           </Select>
         </FormControl>
       </div>
-
       <div
         className="bullets-btn"
         onClick={() => execCommand("insertUnorderedList")}
@@ -145,7 +149,6 @@ const TextEditorToolbar = ({ editorRef, execCommand, setFileContent }) => {
         <img src={ToolBarImage.Bullets} alt="Bullets" />
         <img src={ToolBarImage.Arrow} alt="Arrow" />
       </div>
-
       <div
         className="bullets_numbers-btn"
         onClick={() => execCommand("insertOrderedList")}
@@ -153,7 +156,6 @@ const TextEditorToolbar = ({ editorRef, execCommand, setFileContent }) => {
         <img src={ToolBarImage.Bullet_Numbers} alt="Bullet_Numbers" />
         <img src={ToolBarImage.Arrow} alt="Arrow" />
       </div>
-
       <div
         className="lineSpacing-btn"
         onClick={() => execCommand("justifyFull")}
@@ -161,7 +163,6 @@ const TextEditorToolbar = ({ editorRef, execCommand, setFileContent }) => {
         <img src={ToolBarImage.Line_Spacing} alt="Line_Spacing" />
         <img src={ToolBarImage.Arrow} alt="Arrow" />
       </div>
-
       <FormControl size="small">
         <Select onChange={handleAlignment} value={alignment} displayEmpty>
           <MenuItem value="">
@@ -178,32 +179,27 @@ const TextEditorToolbar = ({ editorRef, execCommand, setFileContent }) => {
           </MenuItem>
         </Select>
       </FormControl>
-
       <div className="emoji-btn">
         <Emoji editorRef={editorRef} />
       </div>
-
-      <div
-        className="tableInsert-btn"
-        onClick={() => execCommand("insertTable")}
-      >
-        <img src={ToolBarImage.Table} alt="InsertTable" />
-        <img src={ToolBarImage.Arrow} alt="Arrow" />
+      <div className="tableInsert-btn" onClick={handleTableEditorOpen}>
+        <img src={ToolBarImage.Table} alt="Table" />
       </div>
+      <TableEditor ref={tableEditorRef} editorRef={editorRef} />
 
+      <div className="hyperlink-btn">
+        <img src={ToolBarImage.Link} alt="hyperlink" />
+      </div>
       <div className="findReplace-btn" onClick={() => execCommand("find")}>
         <img src={ToolBarImage.Find_Replace} alt="Find" />
       </div>
-
       <div className="print-btn" onClick={() => window.print()}>
         <img src={ToolBarImage.Print} alt="Print" />
       </div>
-
-      <div className="upload-btn" onClick={handleButtonClick}>
+      <div className="upload-btn" onClick={() => fileInputRef.current.click()}>
         <img src={ToolBarImage.Upload} alt="Upload" />
         <Upload fileInputRef={fileInputRef} setFileContent={setFileContent} />
       </div>
-
       <div className="download-btn">
         Download
         <img src={ToolBarImage.Download} alt="Document_Download" />
