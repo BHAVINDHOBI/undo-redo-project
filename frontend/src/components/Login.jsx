@@ -122,7 +122,7 @@ const Login = () => {
           </div>
 
           <div onClick={handleFacebookLogin}>
-            <img className="Options" src={MicrosoftLogo} alt="Microsoft Login"
+            <img className="Options" src={MicrosoftLogo} alt="Facebook Login"
             />
           </div>
         </div>

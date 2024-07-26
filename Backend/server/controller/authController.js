@@ -82,7 +82,7 @@ exports.gCallbacks = passport.authenticate("google", {
 });
 
 // facebook
-exports.facebook = passport.authenticate("facebook", { scope: ['profile', 'email'] })
+exports.facebook = passport.authenticate("facebook", { scope: 'email' })
 
 exports.fbCallbacks =   passport.authenticate("facebook", {
     failureRedirect:`${process.env.CLIENT_URL}/login`,

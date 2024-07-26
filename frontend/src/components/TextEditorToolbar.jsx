@@ -78,6 +78,13 @@ const TextEditorToolbar = ({ editorRef, execCommand }) => {
 
   };
 
+  const handleAddHyperlink = () => {
+    const selectedText = window.getSelection().toString();
+    const userUrl = prompt('Enter the URL:');
+    if (userUrl) {
+      document.execCommand('createLink', false, userUrl);
+    }
+  };
 
   return (
     <div className="Toolbar">
@@ -101,7 +108,7 @@ const TextEditorToolbar = ({ editorRef, execCommand }) => {
       <div className="strike-btn" onClick={() => execCommand("strikeThrough")}>
         <img src={ToolBarImage.StrikeThrough} alt="StrikeThrough" />
       </div>
-      <div className="highlight-btn">
+      <div className="highlight-btn" onClick={handleAddHyperlink}>
         <img src={ToolBarImage.Highlight} alt="Highlighter" />
         <img src={ToolBarImage.Arrow} alt="Arrow" />
       </div>

@@ -9,9 +9,11 @@ passport.use(
       clientID: process.env.FACEBOOK_CLIENT_ID,
       clientSecret: process.env.FACEBOOK_SECRET_KEY,
       callbackURL: process.env.FACEBOOK_CALLBACK_URL,
+      profileFields: ['id', 'displayName','photos', 'email']
     },
     async function (accessToken, refreshToken, profile, callback) {
       try {
+
         const existingUser = await User.findOne({ facebookId: profile.id });
 
         if (existingUser) {
@@ -33,14 +35,13 @@ passport.use(
             picture: profile.photos[0].value,
             email_verified: true,
           });
-
           await newUser.save();
           return callback(null, newUser);
         }
       } 
       catch (error) {
-        console.error("Error in Google Strategy:", error);
-        callback(error, null);
+        console.error("Error in Facebook Strategy:", error);
+        return callback(error, null);
       }
     }
   )

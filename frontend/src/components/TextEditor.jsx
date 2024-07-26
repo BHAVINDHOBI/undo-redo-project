@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { debounce } from "lodash";
 import DOMPurify from "dompurify";
@@ -10,6 +10,8 @@ const TextEditor = () => {
   const inputValue = useSelector((state) => state.inputValue);
   const dispatch = useDispatch();
   const editorRef = useRef(null);
+
+  const [tooltip, setTooltip] = useState({ visible: false, x: 0, y: 0, url: '' });
 
   const saveSelection = (containerEl) => {
     let selection = window.getSelection();
@@ -127,6 +129,28 @@ const TextEditor = () => {
     document.execCommand("insertText", false, sanitizeContent(text));
   };
 
+  const handleMouseOver = (e) => {
+    if (e.target.tagName === 'A') {
+      const rect = e.target.getBoundingClientRect();
+      setTooltip({
+        visible: true,
+        x: rect.left,
+        y: rect.top + window.scrollY,
+        url: e.target.href,
+      });
+    }
+  };
+
+  const handleMouseOut = () => {
+    setTooltip({ visible: false, x: 0, y: 0, url: '' });
+  };
+
+  const handleLinkClick = (e) => {
+    if (e.target.tagName === 'A' && e.ctrlKey) {
+      window.open(e.target.href, '_blank');
+    }
+  };
+
   return (
     <div className="TextEditorContainer">
       <TextEditorToolbar editorRef={editorRef} execCommand={execCommand} />
@@ -136,8 +160,31 @@ const TextEditor = () => {
         ref={editorRef}
         onInput={handleInput}
         onPaste={handlePaste}
+        onClick={handleLinkClick}
+        onMouseOver={handleMouseOver}
+        onMouseOut={handleMouseOut}
         suppressContentEditableWarning={true}
       ></div>
+
+      {tooltip.visible && (
+        <div
+          style={{
+            position: 'absolute',
+            top: tooltip.y + 20,
+            left: tooltip.x,
+            backgroundColor: 'white',
+            border: '1px solid black',
+            padding: '5px',
+            zIndex: 1000,
+            whiteSpace: 'nowrap',
+          }}
+        >
+          <a href={tooltip.url} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline' }}>
+            {tooltip.url}
+          </a>
+        </div>
+      )}
+
     </div>
   );
 };
