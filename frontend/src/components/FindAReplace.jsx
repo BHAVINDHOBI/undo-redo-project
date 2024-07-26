@@ -28,39 +28,6 @@ const FindAReplace = ({
     setReplaceText(event.target.value);
   };
 
-  const highlightText = (start, end) => {
-    const range = document.createRange();
-    const sel = window.getSelection();
-    const editor = document.querySelector(".TextEditor");
-
-    if (editor) {
-      const textNodes = Array.from(editor.childNodes).filter(
-        (node) => node.nodeType === Node.TEXT_NODE
-      );
-
-      let accumulatedLength = 0;
-      for (let node of textNodes) {
-        const nodeLength = node.nodeValue.length;
-
-        if (
-          start >= accumulatedLength &&
-          start < accumulatedLength + nodeLength
-        ) {
-          const nodeStart = start - accumulatedLength;
-          const nodeEnd = Math.min(end - accumulatedLength, nodeLength);
-
-          range.setStart(node, nodeStart);
-          range.setEnd(node, nodeEnd);
-          sel.removeAllRanges();
-          sel.addRange(range);
-          break;
-        }
-
-        accumulatedLength += nodeLength;
-      }
-    }
-  };
-
   const updateMatches = (content) => {
     const regex = new RegExp(findText, "gi");
     const newMatches = [];
@@ -73,19 +40,21 @@ const FindAReplace = ({
       });
     }
 
-    console.log("Updated Matches:", newMatches); // Debugging statement
     return newMatches;
   };
 
   const handleFind = () => {
+    if (findText.trim() === "") {
+      alert("Please enter text to find.");
+      return;
+    }
+
     const content = getEditorContent();
     const newMatches = updateMatches(content);
 
     setMatches(newMatches);
     if (newMatches.length > 0) {
       setCurrentMatchIndex(0);
-      const { start, end } = newMatches[0];
-      highlightText(start, end);
     } else {
       setCurrentMatchIndex(null);
     }
@@ -103,19 +72,21 @@ const FindAReplace = ({
 
     // Recalculate matches after replacement
     const updatedMatches = updateMatches(newContent);
-    const nextIndex = Math.min(currentMatchIndex, updatedMatches.length - 1);
-
     setMatches(updatedMatches);
-    setCurrentMatchIndex(nextIndex);
-    if (updatedMatches.length > 0) {
-      const { start: nextStart, end: nextEnd } = updatedMatches[nextIndex];
-      highlightText(nextStart, nextEnd);
-    } else {
-      setCurrentMatchIndex(null);
-    }
+
+    // Update the current match index but do not switch to the next match
+    setCurrentMatchIndex((prevIndex) => {
+      if (prevIndex >= updatedMatches.length) return updatedMatches.length - 1;
+      return prevIndex;
+    });
   };
 
   const handleReplaceAll = () => {
+    if (findText.trim() === "") {
+      alert("Please enter text to find.");
+      return;
+    }
+
     let content = getEditorContent();
     const regex = new RegExp(findText, "gi");
     const newContent = content.replace(regex, replaceText);
@@ -123,7 +94,6 @@ const FindAReplace = ({
 
     // Recalculate matches after replacement
     const updatedMatches = updateMatches(newContent);
-
     setMatches(updatedMatches);
     setCurrentMatchIndex(null);
   };
@@ -133,8 +103,6 @@ const FindAReplace = ({
 
     const nextIndex = (currentMatchIndex + 1) % matches.length;
     setCurrentMatchIndex(nextIndex);
-    const { start, end } = matches[nextIndex];
-    highlightText(start, end);
   };
 
   return (

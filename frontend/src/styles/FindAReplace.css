@@ -21,8 +21,7 @@
 
 /* Styling for highlighting text in the editor */
 .highlight {
-  background-color: yellow;
-  color: black;
+  background-color: yellow; /* or any color you prefer */
 }
 
 /* Adding more styling to the text editor if needed */
