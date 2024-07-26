@@ -28,6 +28,7 @@ import Cross from "./Drawer_Image/cross.svg";
 import UserFiles from "./Drawer_Image/UserFiles.svg";
 import SmileFace from "./ToolBar_Image/face-smile-regular.svg";
 import Link from "./ToolBar_Image/Link.svg";
+import Theme from "./ToolBar_Image/Theme.svg";
 
 const ToolBarImage = {
   Undo: Undo,
@@ -60,6 +61,7 @@ const ToolBarImage = {
   UserFiles: UserFiles,
   SmileFace: SmileFace,
   Link: Link,
+  Theme: Theme,
 };
 
 export default ToolBarImage;

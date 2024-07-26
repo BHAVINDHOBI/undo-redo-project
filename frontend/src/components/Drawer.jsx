@@ -11,7 +11,7 @@ const SidebarComponent = () => {
   };
 
   return (
-    <div>
+    <div className="SideBarComponent">
       <button className="toggle-button" onClick={toggleDrawer}>
         <img src={ToolBar.UserFiles} alt="Files Icon" width="20" height="20" />
         <span>Files</span>

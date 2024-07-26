@@ -1,0 +1,21 @@
+.NameBar {
+  display: flex;
+  background-color: rgba(0, 18, 25, 0.95);
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 28px;
+}
+
+.Text_Editor {
+  font-weight: bolder;
+  font-size: 30px;
+  color: white;
+}
+
+.Theme-Image {
+  filter: invert(0%);
+}
+
+.TextEditorContainer.dark .Theme-Image {
+  filter: invert(100%);
+}

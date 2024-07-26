@@ -1,7 +1,12 @@
 .TextEditor {
   width: 100%;
-  min-height: 100vh;
+  min-height: 78vh;
   background-color: aliceblue;
   padding-left: 2vh;
   outline: none;
+}
+
+.TextEditorContainer.dark .TextEditor {
+  background-color: black;
+  color: white;
 }

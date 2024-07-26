@@ -1,14 +1,17 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { debounce } from "lodash";
 import DOMPurify from "dompurify";
 import "../styles/TextEditor.css";
 import { addToHistory, undo, redo } from "../redux/actions";
 import TextEditorToolbar from "./TextEditorToolbar";
+import NameBar from "./NameBar";
 
 const TextEditor = () => {
   const inputValue = useSelector((state) => state.inputValue);
   const dispatch = useDispatch();
   const editorRef = useRef(null);
+  const [theme, setTheme] = useState("light");
 
   const saveSelection = () => {
     let selection = window.getSelection();
@@ -84,17 +87,29 @@ const TextEditor = () => {
         "td",
         "th",
         "font",
+        "ul",
+        "ol",
+        "li",
+        "div",
+        "p",
+        "h1",
+        "h2",
+        "h3",
+        "h4",
+        "h5",
+        "h6",
+        "blockquote",
       ],
-      ALLOWED_ATTR: ["style", "face", "size", "color"],
+      ALLOWED_ATTR: ["style", "class", "id", "face", "size", "color", "align"],
     });
   };
 
-  const handleInput = () => {
+  const handleInput = debounce((event) => {
     let value = editorRef.current.innerHTML;
     value = sanitizeContent(value);
     const selection = saveSelection();
     dispatch(addToHistory({ value: value || "", selection }));
-  };
+  }, 300);
 
   const setFileContent = (content) => {
     const sanitizedContent = sanitizeContent(content);
@@ -122,19 +137,6 @@ const TextEditor = () => {
         } else if (event.ctrlKey && event.key === "y") {
           event.preventDefault();
           dispatch(redo());
-        } else if (event.key === "Enter") {
-          event.preventDefault();
-          const sel = window.getSelection();
-          if (sel.rangeCount > 0) {
-            const range = sel.getRangeAt(0);
-            range.deleteContents();
-            const br = document.createElement("br");
-            range.insertNode(br);
-            range.setStartAfter(br);
-            sel.removeAllRanges();
-            sel.addRange(range);
-            handleInput();
-          }
         }
       }
     };
@@ -156,7 +158,6 @@ const TextEditor = () => {
   const execCommand = (command, value = null) => {
     const sel = window.getSelection();
     if (sel.rangeCount > 0) {
-      const range = sel.getRangeAt(0);
       document.execCommand(command, false, value);
     }
     editorRef.current.focus();
@@ -168,8 +169,12 @@ const TextEditor = () => {
     document.execCommand("insertText", false, sanitizeContent(text));
   };
 
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+  };
+
   return (
-    <div className="TextEditorContainer">
+    <div className={`TextEditorContainer ${theme}`}>
       <TextEditorToolbar
         editorRef={editorRef}
         execCommand={execCommand}
@@ -177,6 +182,7 @@ const TextEditor = () => {
         getEditorContent={getEditorContent}
         setEditorContent={setEditorContent}
       />
+      <NameBar toggleTheme={toggleTheme} />
       <div
         className="TextEditor"
         contentEditable
