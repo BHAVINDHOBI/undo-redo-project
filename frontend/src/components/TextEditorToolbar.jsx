@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import ToolBarImage from "../assets/Utility";
 import "../styles/TextEditorToolbar.css";
 import { FormControl, Select, MenuItem } from "@mui/material";
@@ -7,13 +7,20 @@ import { useDispatch } from "react-redux";
 import Emoji from "./Emoji";
 import Upload from "./Upload";
 import TableEditor from "./TableEditor";
+import FindAReplace from "./FindAReplace";
 
-const TextEditorToolbar = ({ editorRef, execCommand, setFileContent }) => {
-  const [screenSize, setScreenSize] = React.useState("");
-  const [font, setFont] = React.useState("");
-  const [fontSize, setFontSize] = React.useState("");
-  const [alignment, setAlignment] = React.useState("");
-  const [lineSpacing, setLineSpacing] = React.useState("");
+const TextEditorToolbar = ({
+  editorRef,
+  execCommand,
+  setFileContent,
+  getEditorContent,
+  setEditorContent,
+}) => {
+  const [screenSize, setScreenSize] = useState("");
+  const [font, setFont] = useState("");
+  const [fontSize, setFontSize] = useState("");
+  const [alignment, setAlignment] = useState("");
+  const [showFindReplace, setShowFindReplace] = useState(false);
 
   const dispatch = useDispatch();
   const fileInputRef = React.useRef(null);
@@ -46,6 +53,14 @@ const TextEditorToolbar = ({ editorRef, execCommand, setFileContent }) => {
     if (tableEditorRef.current) {
       tableEditorRef.current.insertTable();
     }
+  };
+
+  const openFindReplaceDialog = () => {
+    setShowFindReplace(true);
+  };
+
+  const closeFindReplaceDialog = () => {
+    setShowFindReplace(false);
   };
 
   return (
@@ -190,9 +205,17 @@ const TextEditorToolbar = ({ editorRef, execCommand, setFileContent }) => {
       <div className="hyperlink-btn">
         <img src={ToolBarImage.Link} alt="hyperlink" />
       </div>
-      <div className="findReplace-btn" onClick={() => execCommand("find")}>
+      <div className="findReplace-btn" onClick={openFindReplaceDialog}>
         <img src={ToolBarImage.Find_Replace} alt="Find" />
       </div>
+      {showFindReplace && (
+        <FindAReplace
+          open={showFindReplace}
+          onClose={closeFindReplaceDialog}
+          getEditorContent={getEditorContent}
+          setEditorContent={setEditorContent}
+        />
+      )}
       <div className="print-btn" onClick={() => window.print()}>
         <img src={ToolBarImage.Print} alt="Print" />
       </div>

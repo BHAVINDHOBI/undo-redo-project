@@ -103,6 +103,16 @@ const TextEditor = () => {
     dispatch(addToHistory({ value: sanitizedContent || "", selection }));
   };
 
+  const getEditorContent = () => {
+    return editorRef.current.innerHTML;
+  };
+
+  const setEditorContent = (content) => {
+    const sanitizedContent = sanitizeContent(content);
+    editorRef.current.innerHTML = sanitizedContent;
+    handleInput();
+  };
+
   useEffect(() => {
     const handleKeyDown = (event) => {
       if (editorRef.current && editorRef.current === document.activeElement) {
@@ -164,6 +174,8 @@ const TextEditor = () => {
         editorRef={editorRef}
         execCommand={execCommand}
         setFileContent={setFileContent}
+        getEditorContent={getEditorContent}
+        setEditorContent={setEditorContent}
       />
       <div
         className="TextEditor"
