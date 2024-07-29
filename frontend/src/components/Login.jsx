@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import NovicEmblem from "../assets/Application_Image/NoviceFigma.png";
 import NovicLogo from "../assets/Application_Image/NovicLogo.png";
 import GoogleLogo from "../assets/Application_Image/Google.svg";
-import MicrosoftLogo from "../assets/Application_Image/Microsoft_Logo.svg";
+import FacebookLogo from "../assets/Application_Image/FacebookLogo.svg";
 import "../styles/Login.css";
 import { Box, Alert, IconButton, Collapse } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
@@ -19,6 +19,10 @@ const Login = () => {
 
   const handleGoogleLogin = () => {
     window.location.href = `${serverapiUrl}/auth/google`;
+  };
+
+  const handleFacebookLogin = () => {
+    window.location.href = `${serverapiUrl}/auth/facebook`;
   };
 
   async function userLogin(e) {
@@ -117,12 +121,8 @@ const Login = () => {
             <img className="Options" src={GoogleLogo} alt="Google Login" />
           </div>
 
-          <div>
-            <img
-              className="Options"
-              src={MicrosoftLogo}
-              alt="Microsoft Login"
-            />
+          <div onClick={handleFacebookLogin}>
+            <img className="Options" src={FacebookLogo} alt="Facebook Login" />
           </div>
         </div>
 

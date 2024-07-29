@@ -29,6 +29,7 @@ import UserFiles from "./Drawer_Image/UserFiles.svg";
 import SmileFace from "./ToolBar_Image/face-smile-regular.svg";
 import Link from "./ToolBar_Image/Link.svg";
 import Theme from "./ToolBar_Image/Theme.svg";
+import FacebookLogo from "./Application_Image/FacebookLogo.svg";
 
 const ToolBarImage = {
   Undo: Undo,
@@ -62,6 +63,7 @@ const ToolBarImage = {
   SmileFace: SmileFace,
   Link: Link,
   Theme: Theme,
+  FacebookLogo: FacebookLogo,
 };
 
 export default ToolBarImage;

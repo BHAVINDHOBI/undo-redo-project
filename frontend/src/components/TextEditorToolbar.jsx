@@ -8,6 +8,7 @@ import Emoji from "./Emoji";
 import Upload from "./Upload";
 import TableEditor from "./TableEditor";
 import FindAReplace from "./FindAReplace";
+import axios from "axios";
 
 const TextEditorToolbar = ({
   editorRef,
@@ -61,6 +62,50 @@ const TextEditorToolbar = ({
 
   const closeFindReplaceDialog = () => {
     setShowFindReplace(false);
+  };
+
+  const handleDownload = async (format) => {
+    const content = editorRef.current.innerHTML;
+    if (format === "txt") {
+      const element = document.createElement("a");
+      const textContent = editorRef.current.innerText;
+      const file = new Blob([textContent], { type: "text/plain" });
+      element.href = URL.createObjectURL(file);
+
+      const date = new Date();
+      const formattedDate = date.toISOString().split("T")[0];
+      element.download = `content-${formattedDate}.txt`;
+
+      document.body.appendChild(element);
+      element.click();
+      document.body.removeChild(element);
+    }
+
+    if (format === "pdf") {
+      try {
+        const response = await axios.post(
+          "http://localhost:8080/api/generatepdf",
+          { content },
+          {
+            responseType: "arraybuffer",
+          }
+        );
+        const pdfBlob = new Blob([response.data], { type: "application/pdf" });
+        const url = URL.createObjectURL(pdfBlob);
+        const link = document.createElement("a");
+        link.href = url;
+
+        const date = new Date();
+        const formattedDate = date.toISOString().split("T")[0];
+        link.download = `content-${formattedDate}.pdf`;
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } catch (error) {
+        console.error("Error generating PDF:", error);
+      }
+    }
   };
 
   return (
@@ -223,7 +268,7 @@ const TextEditorToolbar = ({
         <img src={ToolBarImage.Upload} alt="Upload" />
         <Upload fileInputRef={fileInputRef} setFileContent={setFileContent} />
       </div>
-      <div className="download-btn">
+      <div className="download-btn" onClick={() => handleDownload("pdf")}>
         Download
         <img src={ToolBarImage.Download} alt="Document_Download" />
       </div>
