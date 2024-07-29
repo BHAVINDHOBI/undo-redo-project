@@ -3,7 +3,10 @@ import { ADD_TO_HISTORY, UNDO, REDO } from "./actions";
 const MAX_HISTORY_LENGTH = 50;
 
 const initialState = {
-  inputValue: { value: "", selection: null },
+  inputValue: {
+    value: localStorage.getItem("userFileData") || "",
+    selection: null,
+  },
   history: [{ value: "", selection: null }],
   historyIndex: 0,
 };
@@ -17,7 +20,7 @@ const editorReducer = (state = initialState, action) => {
       if (newHistory.length > MAX_HISTORY_LENGTH) {
         newHistory = newHistory.slice(newHistory.length - MAX_HISTORY_LENGTH);
       }
-
+      localStorage.setItem("userFileData", action.payload.value); // for no saving file data in local storage
       return {
         ...state,
         inputValue: action.payload,

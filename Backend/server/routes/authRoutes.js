@@ -5,7 +5,7 @@ const { generateToken, verifyToken } = require("../utils/generateJWT.js");
 router.post("/userRegistration", authController.userRegistration);
 router.post("/userLogin", authController.userLogin);
 
-router.get("/api/user", verifyToken, authController.getUserData);
+router.get("/user", verifyToken, authController.getUserData);
 
 // google auth
 router.get("/google", authController.google);
