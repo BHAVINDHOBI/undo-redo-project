@@ -71,16 +71,27 @@ const TextEditor = () => {
   };
 
   const sanitizeContent = (content) => {
-    // Sanitize the content using DOMPurify to allow basic formatting tags
     return DOMPurify.sanitize(content, {
-      ALLOWED_TAGS: ["b", "i", "u", "strike", "br", "#text"], // Allow basic formatting tags
-      ALLOWED_ATTR: [], // Disallow all attributes
+      ALLOWED_TAGS: [
+        "b",
+        "i",
+        "u",
+        "strike",
+        "br",
+        "ul",
+        "ol",
+        "li",
+        "div",
+        "span",
+        "font",
+      ],
+      ALLOWED_ATTR: ["size", "color", "face", "style", "class"],
     });
   };
 
   const handleInput = debounce((event) => {
     let value = editorRef.current.innerHTML;
-    value = sanitizeContent(value); // Sanitize the content
+    value = sanitizeContent(value);
     const selection = saveSelection(editorRef.current);
     dispatch(addToHistory({ value: value || "", selection }));
   }, 300);
@@ -112,12 +123,7 @@ const TextEditor = () => {
   }, [inputValue]);
 
   const execCommand = (command, value = null) => {
-    const sel = window.getSelection();
-    if (sel.rangeCount > 0) {
-      const range = sel.getRangeAt(0);
-      const parentNode = range.commonAncestorContainer.parentNode;
-      document.execCommand(command, false, value);
-    }
+    document.execCommand(command, false, value);
     editorRef.current.focus();
   };
 
