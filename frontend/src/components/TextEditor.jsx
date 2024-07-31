@@ -12,6 +12,7 @@ const TextEditor = () => {
   const dispatch = useDispatch();
   const editorRef = useRef(null);
   const [theme, setTheme] = useState("light");
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const saveSelection = () => {
     let selection = window.getSelection();
@@ -173,6 +174,10 @@ const TextEditor = () => {
     setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
   };
 
+  const handleDrawerToggle = (isOpen) => {
+    setIsDrawerOpen(isOpen);
+  };
+
   return (
     <div className={`TextEditorContainer ${theme}`}>
       <TextEditorToolbar
@@ -182,9 +187,9 @@ const TextEditor = () => {
         getEditorContent={getEditorContent}
         setEditorContent={setEditorContent}
       />
-      <NameBar toggleTheme={toggleTheme} />
+      <NameBar toggleTheme={toggleTheme} onDrawerToggle={handleDrawerToggle} />
       <div
-        className="TextEditor"
+        className={`TextEditor ${isDrawerOpen ? "drawer-open" : ""}`}
         contentEditable
         ref={editorRef}
         onInput={handleInput}

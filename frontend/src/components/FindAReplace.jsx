@@ -6,6 +6,7 @@ import {
   TextField,
   DialogActions,
   Button,
+  Typography,
 } from "@mui/material";
 import "../styles/FindAReplace.css";
 
@@ -19,9 +20,11 @@ const FindAReplace = ({
   const [replaceText, setReplaceText] = useState("");
   const [matches, setMatches] = useState([]);
   const [currentMatchIndex, setCurrentMatchIndex] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const handleFindChange = (event) => {
     setFindText(event.target.value);
+    setErrorMessage(""); // Clear error message when find text changes
   };
 
   const handleReplaceChange = (event) => {
@@ -55,8 +58,10 @@ const FindAReplace = ({
     setMatches(newMatches);
     if (newMatches.length > 0) {
       setCurrentMatchIndex(0);
+      setErrorMessage(""); // Clear error message if matches found
     } else {
       setCurrentMatchIndex(null);
+      setErrorMessage("Text not found."); // Set error message if no matches found
     }
   };
 
@@ -123,6 +128,11 @@ const FindAReplace = ({
           onChange={handleReplaceChange}
           className="replace-input"
         />
+        {errorMessage && (
+          <Typography color="error" className="error-message">
+            {errorMessage}
+          </Typography>
+        )}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleFind}>Find</Button>

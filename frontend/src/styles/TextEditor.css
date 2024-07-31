@@ -4,6 +4,12 @@
   background-color: aliceblue;
   padding-left: 2vh;
   outline: none;
+  transition: width 0.3s;
+}
+
+.TextEditor.drawer-open {
+  width: calc(100% - 240px);
+  margin-left: 240px;
 }
 
 .TextEditorContainer.dark .TextEditor {

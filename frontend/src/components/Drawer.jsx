@@ -1,13 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/Drawer.css";
 import ToolBar from "../assets/Utility";
 import UserFiles from "./UserFiles";
 
-const SidebarComponent = () => {
+const SidebarComponent = ({ onToggleDrawer }) => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   const toggleDrawer = () => {
-    setIsDrawerOpen(!isDrawerOpen);
+    const newDrawerState = !isDrawerOpen;
+    setIsDrawerOpen(newDrawerState);
+    onToggleDrawer(newDrawerState);
   };
 
   return (
