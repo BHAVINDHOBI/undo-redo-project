@@ -91,6 +91,54 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
+.strike-btn {
+  border-radius: 5px;
+  padding: 0 2.5px;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background-color 0.3s ease,
+    box-shadow 0.3s ease;
+  outline: none;
+}
+
+.strike-btn:hover {
+  border: 1px solid;
+  background-color: #e7e7e7;
+  border-color: #b5c0d0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.highlight-btn img {
+  border-radius: 5px;
+  padding: 0 2.5px;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background-color 0.3s ease,
+    box-shadow 0.3s ease;
+  outline: none;
+}
+
+.highlight-btn img:hover {
+  border: 1px solid;
+  background-color: #e7e7e7;
+  border-color: #b5c0d0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.textcolor-btn img {
+  border-radius: 5px;
+  padding: 0 2px;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background-color 0.3s ease,
+    box-shadow 0.3s ease;
+  outline: none;
+}
+
+.textcolor-btn img:hover {
+  border: 1px solid;
+  background-color: #e7e7e7;
+  border-color: #b5c0d0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
 .font_style {
   display: flex;
   gap: 5px;

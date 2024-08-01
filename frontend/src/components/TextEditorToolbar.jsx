@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ToolBarImage from "../assets/Utility";
 import "../styles/TextEditorToolbar.css";
 import { FormControl, Select, MenuItem } from "@mui/material";
@@ -8,7 +8,20 @@ import Emoji from "./Emoji";
 import Upload from "./Upload";
 import TableEditor from "./TableEditor";
 import FindAReplace from "./FindAReplace";
-import axios from "axios";
+import WebFont from "webfontloader";
+import DownloadDialog from "./DownloadDialog";
+
+const fonts = [
+  "Arial",
+  "Courier New",
+  "Georgia",
+  "Times New Roman",
+  "Trebuchet MS",
+  "Verdana",
+  "Roboto",
+  "Open Sans",
+  // Add more fonts if needed
+];
 
 const TextEditorToolbar = ({
   editorRef,
@@ -17,23 +30,31 @@ const TextEditorToolbar = ({
   getEditorContent,
   setEditorContent,
 }) => {
-  const [screenSize, setScreenSize] = useState("");
-  const [font, setFont] = useState("");
+  const [font, setFont] = useState(fonts[0]);
   const [fontSize, setFontSize] = useState("");
-  const [alignment, setAlignment] = useState("");
+  const [alignment, setAlignment] = useState("justifyLeft");
   const [showFindReplace, setShowFindReplace] = useState(false);
+  const [showDownload, setShowDownload] = useState(false);
+
+  const [highlightApplied, setHighlightApplied] = useState(false);
+  const [currentBackgroundColor, setCurrentBackgroundColor] =
+    useState("#F0F8FF");
+  const [currentColor, setCurrentColor] = useState("#000000");
+  const [textColorApplied, setTextColorApplied] = useState(false);
 
   const dispatch = useDispatch();
   const fileInputRef = React.useRef(null);
   const tableEditorRef = React.useRef(null);
 
-  const handleScreenChange = (event) => {
-    setScreenSize(event.target.value);
-  };
-
   const handleFont = (event) => {
-    setFont(event.target.value);
-    execCommand("fontName", event.target.value);
+    const selectedFont = event.target.value;
+    setFont(selectedFont);
+    WebFont.load({
+      google: {
+        families: [selectedFont],
+      },
+    });
+    execCommand("fontName", selectedFont);
   };
 
   const handleFontSize = (event) => {
@@ -64,47 +85,96 @@ const TextEditorToolbar = ({
     setShowFindReplace(false);
   };
 
-  const handleDownload = async (format) => {
-    const content = editorRef.current.innerHTML;
-    if (format === "txt") {
-      const element = document.createElement("a");
-      const textContent = editorRef.current.innerText;
-      const file = new Blob([textContent], { type: "text/plain" });
-      element.href = URL.createObjectURL(file);
-
-      const date = new Date();
-      const formattedDate = date.toISOString().split("T")[0];
-      element.download = `content-${formattedDate}.txt`;
-
-      document.body.appendChild(element);
-      element.click();
-      document.body.removeChild(element);
+  const toggleHighlight = () => {
+    if (highlightApplied) {
+      execCommand("hiliteColor", "transparent"); // Removing the highlight
+    } else {
+      execCommand("hiliteColor", currentBackgroundColor); // Applying the highlight
     }
+    setHighlightApplied(!highlightApplied); // Toggling the state
+  };
 
-    if (format === "pdf") {
-      try {
-        const response = await axios.post(
-          "http://localhost:8080/api/generatepdf",
-          { content },
-          {
-            responseType: "arraybuffer",
-          }
-        );
-        const pdfBlob = new Blob([response.data], { type: "application/pdf" });
-        const url = URL.createObjectURL(pdfBlob);
-        const link = document.createElement("a");
-        link.href = url;
+  const toggleTextColor = () => {
+    if (textColorApplied) {
+      execCommand("foreColor", "#000000");
+    } else {
+      execCommand("foreColor", currentColor);
+    }
+    setTextColorApplied(!textColorApplied);
+  };
 
-        const date = new Date();
-        const formattedDate = date.toISOString().split("T")[0];
-        link.download = `content-${formattedDate}.pdf`;
+  const openDownload = () => {
+    setShowDownload(true);
+  };
 
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      } catch (error) {
-        console.error("Error generating PDF:", error);
-      }
+  const closeDownload = () => {
+    setShowDownload(false);
+  };
+
+  const handlePrint = () => {
+    const printContent = editorRef.current.innerHTML;
+    const width = 1000;
+    const height = 700;
+
+    const left = (window.innerWidth - width) / 2;
+    const top = (window.innerHeight - height) / 2;
+    const newWindow = window.open(
+      "",
+      "_blank",
+      `width=${width},height=${height},left=${left},top=${top}`
+    );
+
+    if (newWindow) {
+      newWindow.document.open();
+      newWindow.document.write(`
+        <html>
+          <head>
+            <style>
+              body {
+                margin: 0;
+                padding: 0;
+                font-family: Arial, sans-serif;
+                background-color: #ffffff; /* Ensure background color is applied to the body */
+              }
+              @media print {
+                body {
+                  margin: 0;
+                  padding: 20px !important; /* Add space around the content */
+                  box-sizing: border-box; /* Ensure padding is included in the width/height */
+                  background-color: #ffffff !important; /* Ensure background color is applied */
+                }
+                @page {
+                  size: auto;
+                  margin: 0 !important; /* Removes default margins */
+                }
+                header, footer, nav, .no-print {
+                  display: none !important; /* Hides headers, footers, and other non-printable elements */
+                }
+                /* Apply background color styles to content */
+                .print-content {
+                  background-color: #ffffff !important; /* Ensure background color is applied */
+                }
+              }
+            </style>
+          </head>
+          <body>
+            <div class="print-content">
+              ${printContent}
+            </div>
+            <script type="text/javascript">
+              window.onload = function() {
+                setTimeout(function() {
+                  window.print();
+                  window.close();
+                }, 500); // Adjust delay if necessary
+              };
+            </script>
+          </body>
+        </html>
+      `);
+      newWindow.document.close();
+    } else {
+      console.error("Failed to open a new window for printing.");
     }
   };
 
@@ -131,31 +201,31 @@ const TextEditorToolbar = ({
         <img src={ToolBarImage.StrikeThrough} alt="StrikeThrough" />
       </div>
       <div className="highlight-btn">
-        <img src={ToolBarImage.Highlight} alt="Highlighter" />
-        <img src={ToolBarImage.Arrow} alt="Arrow" />
+        <img
+          src={ToolBarImage.Highlight}
+          alt="Highlighter"
+          onClick={toggleHighlight}
+        />
+        <input
+          type="color"
+          onChange={(e) => setCurrentBackgroundColor(e.target.value)}
+          value={currentBackgroundColor}
+          style={{ width: "20px", height: "22px", border: "none" }}
+        />
       </div>
       <div className="textcolor-btn">
-        <img src={ToolBarImage.TextColor} alt="Text color" />
-        <img src={ToolBarImage.Arrow} alt="Arrow" />
+        <img
+          src={ToolBarImage.TextColor}
+          alt="Text color"
+          onClick={toggleTextColor}
+        />
+        <input
+          type="color"
+          onChange={(e) => setCurrentColor(e.target.value)}
+          value={currentColor}
+          style={{ width: "20px", height: "22px", border: "none" }}
+        />
       </div>
-      <FormControl size="small">
-        <Select
-          onChange={handleScreenChange}
-          value={screenSize}
-          displayEmpty
-          MenuProps={{
-            PaperProps: {
-              style: {
-                maxHeight: 200,
-              },
-            },
-          }}
-        >
-          <MenuItem value="">100%</MenuItem>
-          <MenuItem value="200%">200%</MenuItem>
-          <MenuItem value="300%">300%</MenuItem>
-        </Select>
-      </FormControl>
       <div className="font_style">
         <FormControl size="small">
           <Select
@@ -170,9 +240,11 @@ const TextEditorToolbar = ({
               },
             }}
           >
-            <MenuItem value="">Arial</MenuItem>
-            <MenuItem value="Times New Roman">Times New Roman</MenuItem>
-            <MenuItem value="Calibri">Calibri</MenuItem>
+            {fonts.map((font) => (
+              <MenuItem key={font} value={font}>
+                {font}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
         <FormControl size="small">
@@ -225,7 +297,7 @@ const TextEditorToolbar = ({
       </div>
       <FormControl size="small">
         <Select onChange={handleAlignment} value={alignment} displayEmpty>
-          <MenuItem value="">
+          <MenuItem value="justifyLeft">
             <img src={ToolBarImage.AlignLeft} alt="AlignLeft" />
           </MenuItem>
           <MenuItem value="justifyCenter">
@@ -246,7 +318,6 @@ const TextEditorToolbar = ({
         <img src={ToolBarImage.Table} alt="Table" />
       </div>
       <TableEditor ref={tableEditorRef} editorRef={editorRef} />
-
       <div className="hyperlink-btn">
         <img src={ToolBarImage.Link} alt="hyperlink" />
       </div>
@@ -261,17 +332,25 @@ const TextEditorToolbar = ({
           setEditorContent={setEditorContent}
         />
       )}
-      <div className="print-btn" onClick={() => window.print()}>
+      <div className="print-btn" onClick={handlePrint}>
         <img src={ToolBarImage.Print} alt="Print" />
       </div>
       <div className="upload-btn" onClick={() => fileInputRef.current.click()}>
         <img src={ToolBarImage.Upload} alt="Upload" />
         <Upload fileInputRef={fileInputRef} setFileContent={setFileContent} />
       </div>
-      <div className="download-btn" onClick={() => handleDownload("pdf")}>
+      <div className="download-btn" onClick={openDownload}>
         Download
         <img src={ToolBarImage.Download} alt="Document_Download" />
       </div>
+      {showDownload && (
+        <DownloadDialog
+          editorRef={editorRef}
+          open={showDownload}
+          onClose={closeDownload}
+          getEditorContent={getEditorContent}
+        />
+      )}
     </div>
   );
 };

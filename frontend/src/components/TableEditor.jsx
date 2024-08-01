@@ -43,7 +43,7 @@ const TableEditor = forwardRef(({ editorRef }, ref) => {
     hasHeader,
     headerColor
   ) => {
-    let tableHtml = `<table style="border-collapse: collapse; border-color: ${borderColor};"><tbody>`;
+    let tableHtml = `<table class="custom-table" style="border-collapse: collapse; border-color: ${borderColor};"><tbody>`;
     if (hasHeader) {
       tableHtml += `<tr style="background-color: ${headerColor}; border-color: ${borderColor};">`;
       for (let j = 0; j < columns; j++) {
