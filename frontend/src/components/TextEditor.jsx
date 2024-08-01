@@ -100,8 +100,18 @@ const TextEditor = () => {
         "h5",
         "h6",
         "blockquote",
+        "a",
       ],
-      ALLOWED_ATTR: ["style", "class", "id", "face", "size", "color", "align"],
+      ALLOWED_ATTR: [
+        "style",
+        "class",
+        "id",
+        "face",
+        "size",
+        "color",
+        "align",
+        "href",
+      ],
     });
   };
 
@@ -155,6 +165,22 @@ const TextEditor = () => {
       restoreSelection(selection);
     }
   }, [inputValue]);
+
+  useEffect(() => {
+    const handleCtrlClick = (event) => {
+      if (event.ctrlKey && event.target.tagName === "A") {
+        event.preventDefault();
+        window.open(event.target.href, "_blank");
+      }
+    };
+
+    const editorElement = editorRef.current;
+    editorElement.addEventListener("click", handleCtrlClick);
+
+    return () => {
+      editorElement.removeEventListener("click", handleCtrlClick);
+    };
+  }, []);
 
   const execCommand = (command, value = null) => {
     const sel = window.getSelection();

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import ToolBarImage from "../assets/Utility";
 import "../styles/TextEditorToolbar.css";
 import { FormControl, Select, MenuItem } from "@mui/material";
@@ -10,6 +10,7 @@ import TableEditor from "./TableEditor";
 import FindAReplace from "./FindAReplace";
 import WebFont from "webfontloader";
 import DownloadDialog from "./DownloadDialog";
+import Hyperlink from "./Hyperlink";
 
 const fonts = [
   "Arial",
@@ -35,6 +36,7 @@ const TextEditorToolbar = ({
   const [alignment, setAlignment] = useState("justifyLeft");
   const [showFindReplace, setShowFindReplace] = useState(false);
   const [showDownload, setShowDownload] = useState(false);
+  const [showHyperlinkDialog, setShowHyperlinkDialog] = useState(false);
 
   const [highlightApplied, setHighlightApplied] = useState(false);
   const [currentBackgroundColor, setCurrentBackgroundColor] =
@@ -45,6 +47,38 @@ const TextEditorToolbar = ({
   const dispatch = useDispatch();
   const fileInputRef = React.useRef(null);
   const tableEditorRef = React.useRef(null);
+
+  const selectionRef = useRef(null);
+
+  const handleAddLink = (url) => {
+    restoreSelection();
+    execCommand("createLink", url);
+    setShowHyperlinkDialog(false);
+  };
+
+  const saveSelection = () => {
+    if (window.getSelection) {
+      const sel = window.getSelection();
+      if (sel.rangeCount > 0) {
+        selectionRef.current = sel.getRangeAt(0);
+      }
+    } else if (document.selection && document.selection.createRange) {
+      selectionRef.current = document.selection.createRange();
+    }
+  };
+
+  const restoreSelection = () => {
+    if (selectionRef.current) {
+      const sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(selectionRef.current);
+    }
+  };
+
+  const handleOpenHyperlinkDialog = () => {
+    saveSelection();
+    setShowHyperlinkDialog(true);
+  };
 
   const handleFont = (event) => {
     const selectedFont = event.target.value;
@@ -318,9 +352,16 @@ const TextEditorToolbar = ({
         <img src={ToolBarImage.Table} alt="Table" />
       </div>
       <TableEditor ref={tableEditorRef} editorRef={editorRef} />
-      <div className="hyperlink-btn">
+
+      <div className="hyperlink-btn" onClick={handleOpenHyperlinkDialog}>
         <img src={ToolBarImage.Link} alt="hyperlink" />
       </div>
+      <Hyperlink
+        open={showHyperlinkDialog}
+        onClose={() => setShowHyperlinkDialog(false)}
+        onAddLink={handleAddLink}
+      />
+
       <div className="findReplace-btn" onClick={openFindReplaceDialog}>
         <img src={ToolBarImage.Find_Replace} alt="Find" />
       </div>
