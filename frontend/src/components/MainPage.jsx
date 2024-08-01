@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import TextEditorToolbar from "./TextEditorToolbar";
 import AppBar from "./AppBar";
-import TextEditorArea from "./TextEditorArea";
+import TextEditor from "./TextEditor";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 const serverapiUrl = import.meta.env.VITE_API_URL;
@@ -45,7 +45,7 @@ const MainPage = () => {
   return (
     <>
       <AppBar userData={userData} />
-      <TextEditorArea />
+      <TextEditor />
     </>
   );
 };

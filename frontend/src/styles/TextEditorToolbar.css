@@ -152,4 +152,21 @@
   gap: 8px;
   padding: 5px 15px;
   border-radius: 8px;
+  cursor: pointer;
+}
+.btn {
+  cursor: pointer;
+  border-radius: 5px;
+  padding: 0 2.5px;
+  cursor: pointer;
+  transition: border-color 0.3s ease, background-color 0.3s ease,
+    box-shadow 0.3s ease;
+  outline: none;
+}
+
+.btn:hover {
+  border: 1px solid;
+  background-color: #e7e7e7;
+  border-color: #b5c0d0;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }

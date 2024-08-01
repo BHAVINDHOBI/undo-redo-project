@@ -14,8 +14,10 @@
 
 .Theme-Image {
   filter: invert(0%);
+  cursor: pointer;
 }
 
 .TextEditorContainer.dark .Theme-Image {
   filter: invert(100%);
+  cursor: pointer;
 }

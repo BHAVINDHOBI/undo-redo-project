@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import ToolBarImage from "../assets/Utility";
 import "../styles/TextEditorToolbar.css";
-import { FormControl, Select, MenuItem } from "@mui/material";
+import { FormControl, Select, MenuItem, Tooltip } from "@mui/material";
 import { undo, redo } from "../redux/actions";
 import { useDispatch } from "react-redux";
 import Emoji from "./Emoji";
@@ -32,7 +32,7 @@ const TextEditorToolbar = ({
   setEditorContent,
 }) => {
   const [font, setFont] = useState(fonts[0]);
-  const [fontSize, setFontSize] = useState("");
+  const [fontSize, setFontSize] = useState("3");
   const [alignment, setAlignment] = useState("justifyLeft");
   const [showFindReplace, setShowFindReplace] = useState(false);
   const [showDownload, setShowDownload] = useState(false);
@@ -215,51 +215,71 @@ const TextEditorToolbar = ({
   return (
     <div className="Toolbar">
       <div className="undo-redo_style">
-        <div className="undo-btn" onClick={() => dispatch(undo())}>
-          <img src={ToolBarImage.Undo} alt="Undo" />
+        <Tooltip title="Undo">
+          <div className="undo-btn" onClick={() => dispatch(undo())}>
+            <img src={ToolBarImage.Undo} alt="Undo" />
+          </div>
+        </Tooltip>
+        <Tooltip title="Redo">
+          <div className="redo-btn" onClick={() => dispatch(redo())}>
+            <img src={ToolBarImage.Redo} alt="Redo" />
+          </div>
+        </Tooltip>
+      </div>
+      <Tooltip title="Bold">
+        <div className="bold-btn" onClick={() => execCommand("bold")}>
+          <img src={ToolBarImage.Bold} alt="Bold" />
         </div>
-        <div className="redo-btn" onClick={() => dispatch(redo())}>
-          <img src={ToolBarImage.Redo} alt="Redo" />
+      </Tooltip>
+
+      <Tooltip title="Italic">
+        <div className="italic-btn" onClick={() => execCommand("italic")}>
+          <img src={ToolBarImage.Italic} alt="Italic" />
         </div>
-      </div>
-      <div className="bold-btn" onClick={() => execCommand("bold")}>
-        <img src={ToolBarImage.Bold} alt="Bold" />
-      </div>
-      <div className="italic-btn" onClick={() => execCommand("italic")}>
-        <img src={ToolBarImage.Italic} alt="Italic" />
-      </div>
-      <div className="underline-btn" onClick={() => execCommand("underline")}>
-        <img src={ToolBarImage.Underline} alt="Underline" />
-      </div>
-      <div className="strike-btn" onClick={() => execCommand("strikeThrough")}>
-        <img src={ToolBarImage.StrikeThrough} alt="StrikeThrough" />
-      </div>
-      <div className="highlight-btn">
-        <img
-          src={ToolBarImage.Highlight}
-          alt="Highlighter"
-          onClick={toggleHighlight}
-        />
-        <input
-          type="color"
-          onChange={(e) => setCurrentBackgroundColor(e.target.value)}
-          value={currentBackgroundColor}
-          style={{ width: "20px", height: "22px", border: "none" }}
-        />
-      </div>
-      <div className="textcolor-btn">
-        <img
-          src={ToolBarImage.TextColor}
-          alt="Text color"
-          onClick={toggleTextColor}
-        />
-        <input
-          type="color"
-          onChange={(e) => setCurrentColor(e.target.value)}
-          value={currentColor}
-          style={{ width: "20px", height: "22px", border: "none" }}
-        />
-      </div>
+      </Tooltip>
+      <Tooltip title="Underline">
+        <div className="underline-btn" onClick={() => execCommand("underline")}>
+          <img src={ToolBarImage.Underline} alt="Underline" />
+        </div>
+      </Tooltip>
+      <Tooltip title="Strike Through">
+        <div
+          className="strike-btn"
+          onClick={() => execCommand("strikeThrough")}
+        >
+          <img src={ToolBarImage.StrikeThrough} alt="StrikeThrough" />
+        </div>
+      </Tooltip>
+      <Tooltip title="Highlighter">
+        <div className="highlight-btn">
+          <img
+            src={ToolBarImage.Highlight}
+            alt="Highlighter"
+            onClick={toggleHighlight}
+          />
+          <input
+            type="color"
+            onChange={(e) => setCurrentBackgroundColor(e.target.value)}
+            value={currentBackgroundColor}
+            style={{ width: "20px", height: "22px", border: "none" }}
+          />
+        </div>
+      </Tooltip>
+      <Tooltip title="Text Colour">
+        <div className="textcolor-btn">
+          <img
+            src={ToolBarImage.TextColor}
+            alt="Text color"
+            onClick={toggleTextColor}
+          />
+          <input
+            type="color"
+            onChange={(e) => setCurrentColor(e.target.value)}
+            value={currentColor}
+            style={{ width: "20px", height: "22px", border: "none" }}
+          />
+        </div>
+      </Tooltip>
       <div className="font_style">
         <FormControl size="small">
           <Select
@@ -294,41 +314,38 @@ const TextEditorToolbar = ({
               },
             }}
           >
-            <MenuItem value={8}>8</MenuItem>
-            <MenuItem value={9}>9</MenuItem>
-            <MenuItem value={10}>10</MenuItem>
-            <MenuItem value={11}>11</MenuItem>
-            <MenuItem value="">12</MenuItem>
-            <MenuItem value={14}>14</MenuItem>
-            <MenuItem value={16}>16</MenuItem>
-            <MenuItem value={18}>18</MenuItem>
-            <MenuItem value={20}>20</MenuItem>
-            <MenuItem value={22}>22</MenuItem>
-            <MenuItem value={24}>24</MenuItem>
+            {[1, 2, 3, 4, 5, 6, 7].map((size) => (
+              <MenuItem key={size} value={size}>
+                {size + 7}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </div>
-      <div
-        className="bullets-btn"
-        onClick={() => execCommand("insertUnorderedList")}
-      >
-        <img src={ToolBarImage.Bullets} alt="Bullets" />
-        <img src={ToolBarImage.Arrow} alt="Arrow" />
-      </div>
-      <div
-        className="bullets_numbers-btn"
-        onClick={() => execCommand("insertOrderedList")}
-      >
-        <img src={ToolBarImage.Bullet_Numbers} alt="Bullet_Numbers" />
-        <img src={ToolBarImage.Arrow} alt="Arrow" />
-      </div>
-      <div
-        className="lineSpacing-btn"
-        onClick={() => execCommand("justifyFull")}
-      >
-        <img src={ToolBarImage.Line_Spacing} alt="Line_Spacing" />
-        <img src={ToolBarImage.Arrow} alt="Arrow" />
-      </div>
+      <Tooltip title="Bullets">
+        <div
+          className="bullets btn"
+          onClick={() => execCommand("insertUnorderedList")}
+        >
+          <img src={ToolBarImage.Bullets} alt="Bullets" />
+        </div>
+      </Tooltip>
+      <Tooltip title=" Number Bullet">
+        <div
+          className="bullets_numbers btn"
+          onClick={() => execCommand("insertOrderedList")}
+        >
+          <img src={ToolBarImage.Bullet_Numbers} alt="Bullet_Numbers" />
+        </div>
+      </Tooltip>
+      <Tooltip title="Line Spacing">
+        <div
+          className="lineSpacing btn"
+          onClick={() => execCommand("justifyFull")}
+        >
+          <img src={ToolBarImage.Line_Spacing} alt="Line_Spacing" />
+        </div>
+      </Tooltip>
       <FormControl size="small">
         <Select onChange={handleAlignment} value={alignment} displayEmpty>
           <MenuItem value="justifyLeft">
@@ -345,41 +362,55 @@ const TextEditorToolbar = ({
           </MenuItem>
         </Select>
       </FormControl>
-      <div className="emoji-btn">
-        <Emoji editorRef={editorRef} />
-      </div>
-      <div className="tableInsert-btn" onClick={handleTableEditorOpen}>
-        <img src={ToolBarImage.Table} alt="Table" />
-      </div>
-      <TableEditor ref={tableEditorRef} editorRef={editorRef} />
-
-      <div className="hyperlink-btn" onClick={handleOpenHyperlinkDialog}>
-        <img src={ToolBarImage.Link} alt="hyperlink" />
-      </div>
-      <Hyperlink
-        open={showHyperlinkDialog}
-        onClose={() => setShowHyperlinkDialog(false)}
-        onAddLink={handleAddLink}
-      />
-
-      <div className="findReplace-btn" onClick={openFindReplaceDialog}>
-        <img src={ToolBarImage.Find_Replace} alt="Find" />
-      </div>
-      {showFindReplace && (
-        <FindAReplace
-          open={showFindReplace}
-          onClose={closeFindReplaceDialog}
-          getEditorContent={getEditorContent}
-          setEditorContent={setEditorContent}
+      <Tooltip title="Emoji">
+        <div className="emoji btn">
+          <Emoji editorRef={editorRef} />
+        </div>
+      </Tooltip>
+      <Tooltip title="Table">
+        <div className="tableInsert btn" onClick={handleTableEditorOpen}>
+          <img src={ToolBarImage.Table} alt="Table" />
+        </div>
+        <TableEditor ref={tableEditorRef} editorRef={editorRef} />
+      </Tooltip>
+      <Tooltip title="HyperLink">
+        <div className="hyperlink btn" onClick={handleOpenHyperlinkDialog}>
+          <img src={ToolBarImage.Link} alt="hyperlink" />
+        </div>
+        <Hyperlink
+          open={showHyperlinkDialog}
+          onClose={() => setShowHyperlinkDialog(false)}
+          onAddLink={handleAddLink}
         />
-      )}
-      <div className="print-btn" onClick={handlePrint}>
-        <img src={ToolBarImage.Print} alt="Print" />
-      </div>
-      <div className="upload-btn" onClick={() => fileInputRef.current.click()}>
-        <img src={ToolBarImage.Upload} alt="Upload" />
-        <Upload fileInputRef={fileInputRef} setFileContent={setFileContent} />
-      </div>
+      </Tooltip>
+      <Tooltip title="Find & Replace">
+        <div className="findReplace btn" onClick={openFindReplaceDialog}>
+          <img src={ToolBarImage.Find_Replace} alt="Find" />
+        </div>
+        {showFindReplace && (
+          <FindAReplace
+            open={showFindReplace}
+            onClose={closeFindReplaceDialog}
+            getEditorContent={getEditorContent}
+            setEditorContent={setEditorContent}
+          />
+        )}
+      </Tooltip>
+      <Tooltip title="Print">
+        <div className="print btn" onClick={handlePrint}>
+          <img src={ToolBarImage.Print} alt="Print" />
+        </div>
+      </Tooltip>
+      <Tooltip title="Upload">
+        <div
+          className="upload btn"
+          onClick={() => fileInputRef.current.click()}
+        >
+          <img src={ToolBarImage.Upload} alt="Upload" />
+          <Upload fileInputRef={fileInputRef} setFileContent={setFileContent} />
+        </div>
+      </Tooltip>
+
       <div className="download-btn" onClick={openDownload}>
         Download
         <img src={ToolBarImage.Download} alt="Document_Download" />
