@@ -21,7 +21,7 @@ const AppBar = ({ userData }) => {
           <div id="Username">{userData.userName || "Guest"}</div>
         </div>
         <div className="Notification-Logout">
-          {/* <img src={ToolBarImage.Notification} alt="Notification" /> */}
+          <img src={ToolBarImage.Notification} alt="Notification" />
           <img src={ToolBarImage.Logout} onClick={Logout} alt="Logout" />
         </div>
       </div>

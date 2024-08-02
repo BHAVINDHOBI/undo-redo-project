@@ -42,6 +42,9 @@
   align-items: center;
   gap: 10px;
 }
+.Notification-Logout {
+  cursor: pointer;
+}
 /* @media (max-width: 2560px) {
   .AppContainer {
     padding: 30px 60px;

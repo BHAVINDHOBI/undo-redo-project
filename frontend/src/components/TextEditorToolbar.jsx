@@ -12,17 +12,28 @@ import WebFont from "webfontloader";
 import DownloadDialog from "./DownloadDialog";
 import Hyperlink from "./Hyperlink";
 
-const fonts = [
+const googleFonts = [
+  "Roboto",
+  "Open Sans",
+  "Lobster",
+  "Pacifico",
+  "Indie Flower",
+  "Montserrat",
+  "Oswald",
+  "Raleway",
+  "Playfair Display",
+  // Add more Google Fonts if needed
+];
+
+const systemFonts = [
   "Arial",
   "Courier New",
   "Georgia",
   "Times New Roman",
   "Trebuchet MS",
   "Verdana",
-  "Roboto",
-  "Open Sans",
-  // Add more fonts if needed
 ];
+const allFonts = [...systemFonts, ...googleFonts];
 
 const TextEditorToolbar = ({
   editorRef,
@@ -31,7 +42,7 @@ const TextEditorToolbar = ({
   getEditorContent,
   setEditorContent,
 }) => {
-  const [font, setFont] = useState(fonts[0]);
+  const [font, setFont] = useState(allFonts[0]);
   const [fontSize, setFontSize] = useState("3");
   const [alignment, setAlignment] = useState("justifyLeft");
   const [showFindReplace, setShowFindReplace] = useState(false);
@@ -49,6 +60,20 @@ const TextEditorToolbar = ({
   const tableEditorRef = React.useRef(null);
 
   const selectionRef = useRef(null);
+  // To not get loading font problems
+  useEffect(() => {
+    WebFont.load({
+      google: {
+        families: googleFonts,
+      },
+      fontactive: (familyName, fvd) => {
+        console.log(`${familyName} loaded successfully`);
+      },
+      fontinactive: (familyName, fvd) => {
+        console.error(`Failed to load font: ${familyName}`);
+      },
+    });
+  }, []);
 
   const handleAddLink = (url) => {
     restoreSelection();
@@ -83,12 +108,22 @@ const TextEditorToolbar = ({
   const handleFont = (event) => {
     const selectedFont = event.target.value;
     setFont(selectedFont);
-    WebFont.load({
-      google: {
-        families: [selectedFont],
-      },
-    });
-    execCommand("fontName", selectedFont);
+
+    if (systemFonts.includes(selectedFont)) {
+      document.execCommand("fontName", false, selectedFont);
+    } else {
+      WebFont.load({
+        google: {
+          families: [selectedFont],
+        },
+        fontactive: () => {
+          execCommand("fontName", selectedFont);
+        },
+        fontinactive: () => {
+          console.error(`Failed to load font: ${selectedFont}`);
+        },
+      });
+    }
   };
 
   const handleFontSize = (event) => {
@@ -281,26 +316,20 @@ const TextEditorToolbar = ({
         </div>
       </Tooltip>
       <div className="font_style">
-        <FormControl size="small">
-          <Select
-            onChange={handleFont}
-            value={font}
-            displayEmpty
-            MenuProps={{
-              PaperProps: {
-                style: {
-                  maxHeight: 200,
-                },
-              },
-            }}
-          >
-            {fonts.map((font) => (
-              <MenuItem key={font} value={font}>
+        <FormControl className="font-form">
+          <Select value={font} onChange={handleFont} displayEmpty>
+            {allFonts.map((font) => (
+              <MenuItem
+                key={font}
+                value={font}
+                style={{ fontFamily: font, maxHeight: 200 }}
+              >
                 {font}
               </MenuItem>
             ))}
           </Select>
         </FormControl>
+
         <FormControl size="small">
           <Select
             onChange={handleFontSize}
