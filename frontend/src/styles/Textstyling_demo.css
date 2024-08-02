@@ -1,0 +1,20 @@
+.toolbar button,
+.toolbar select,
+.toolbar input[type="color"] {
+  padding: 5px;
+  font-size: 14px;
+  background-color: rgb(255, 251, 251);
+  color: black;
+  border: none;
+  cursor: pointer;
+}
+
+.toolbar button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+input[type="file"] {
+  display: none;
+}
