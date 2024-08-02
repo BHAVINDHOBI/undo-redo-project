@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "passport-facebook": "^3.0.0",
-    "puppeteer": "^22.14.0"
-  }
-}
