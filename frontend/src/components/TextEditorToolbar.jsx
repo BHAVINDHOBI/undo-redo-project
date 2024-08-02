@@ -338,14 +338,7 @@ const TextEditorToolbar = ({
           <img src={ToolBarImage.Bullet_Numbers} alt="Bullet_Numbers" />
         </div>
       </Tooltip>
-      <Tooltip title="Line Spacing">
-        <div
-          className="lineSpacing btn"
-          onClick={() => execCommand("justifyFull")}
-        >
-          <img src={ToolBarImage.Line_Spacing} alt="Line_Spacing" />
-        </div>
-      </Tooltip>
+
       <FormControl size="small">
         <Select onChange={handleAlignment} value={alignment} displayEmpty>
           <MenuItem value="justifyLeft">
@@ -371,30 +364,16 @@ const TextEditorToolbar = ({
         <div className="tableInsert btn" onClick={handleTableEditorOpen}>
           <img src={ToolBarImage.Table} alt="Table" />
         </div>
-        <TableEditor ref={tableEditorRef} editorRef={editorRef} />
       </Tooltip>
       <Tooltip title="HyperLink">
         <div className="hyperlink btn" onClick={handleOpenHyperlinkDialog}>
           <img src={ToolBarImage.Link} alt="hyperlink" />
         </div>
-        <Hyperlink
-          open={showHyperlinkDialog}
-          onClose={() => setShowHyperlinkDialog(false)}
-          onAddLink={handleAddLink}
-        />
       </Tooltip>
       <Tooltip title="Find & Replace">
         <div className="findReplace btn" onClick={openFindReplaceDialog}>
           <img src={ToolBarImage.Find_Replace} alt="Find" />
         </div>
-        {showFindReplace && (
-          <FindAReplace
-            open={showFindReplace}
-            onClose={closeFindReplaceDialog}
-            getEditorContent={getEditorContent}
-            setEditorContent={setEditorContent}
-          />
-        )}
       </Tooltip>
       <Tooltip title="Print">
         <div className="print btn" onClick={handlePrint}>
@@ -421,6 +400,20 @@ const TextEditorToolbar = ({
           open={showDownload}
           onClose={closeDownload}
           getEditorContent={getEditorContent}
+        />
+      )}
+      <TableEditor ref={tableEditorRef} editorRef={editorRef} />
+      <Hyperlink
+        open={showHyperlinkDialog}
+        onClose={() => setShowHyperlinkDialog(false)}
+        onAddLink={handleAddLink}
+      />
+      {showFindReplace && (
+        <FindAReplace
+          open={showFindReplace}
+          onClose={closeFindReplaceDialog}
+          getEditorContent={getEditorContent}
+          setEditorContent={setEditorContent}
         />
       )}
     </div>

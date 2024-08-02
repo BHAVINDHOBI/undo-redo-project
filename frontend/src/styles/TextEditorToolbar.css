@@ -6,6 +6,7 @@
   padding: 0 30px;
   height: 55px;
   color: azure;
+  flex-wrap: wrap;
 }
 
 .Toolbar img {
@@ -169,4 +170,52 @@
   background-color: #e7e7e7;
   border-color: #b5c0d0;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+/* @media (max-width: 2560px) {
+  .Toolbar {
+    align-items: center;
+    justify-content: space-evenly;
+    height: 70px;
+  }
+} */
+
+@media (max-width: 1440px) {
+  .Toolbar {
+    height: auto;
+    padding: 10px 10px;
+    gap: 5px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .Toolbar {
+    height: auto;
+    padding: 10px 30px;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .Toolbar {
+    height: auto;
+    padding: 10px 25px;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .Toolbar {
+    height: auto;
+    padding: 10px 20px;
+    gap: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .Toolbar {
+    height: auto;
+    padding: 10px 10px;
+    gap: 6px;
+  }
 }

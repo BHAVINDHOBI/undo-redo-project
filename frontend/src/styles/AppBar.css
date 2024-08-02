@@ -42,3 +42,125 @@
   align-items: center;
   gap: 10px;
 }
+/* @media (max-width: 2560px) {
+  .AppContainer {
+    padding: 30px 60px;
+  }
+
+  .Logo-Container {
+    gap: 30px;
+  }
+
+  .AppBar-Utitilies {
+    gap: 35px;
+  }
+} */
+@media (max-width: 1440px) {
+  .AppContainer {
+    padding: 20px 40px;
+  }
+
+  .Logo-Container {
+    gap: 20px;
+  }
+
+  .AppBar-Utitilies {
+    gap: 25px;
+  }
+}
+@media (max-width: 1200px) {
+  .AppContainer {
+    padding: 15px 30px;
+  }
+
+  .Logo-Container {
+    gap: 15px;
+  }
+
+  .AppBar-Utitilies {
+    gap: 20px;
+  }
+}
+
+@media (max-width: 992px) {
+  .AppContainer {
+    padding: 15px 25px;
+  }
+
+  .Logo-Container {
+    gap: 12px;
+  }
+
+  .AppBar-Utitilies {
+    gap: 18px;
+  }
+
+  .Profile img {
+    width: 27px;
+    height: 27px;
+  }
+}
+
+@media (max-width: 768px) {
+  .AppContainer {
+    padding: 10px 20px;
+  }
+
+  .Logo-Container {
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .AppBar-Utitilies {
+    gap: 10px;
+    align-items: center;
+  }
+
+  .Profile img {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+@media (max-width: 600px) {
+  .AppContainer {
+    padding: 8px 15px;
+  }
+
+  .Logo-Container {
+    gap: 8px;
+  }
+
+  .AppBar-Utitilies {
+    gap: 8px;
+  }
+
+  .Profile img {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .AppContainer {
+    padding: 7px 15px;
+  }
+
+  .Logo-Container img {
+    height: 20px;
+  }
+
+  .Profile {
+    gap: 1px;
+  }
+
+  .Profile img {
+    width: 23px;
+    height: 23px;
+  }
+
+  .AppBar-Utitilies {
+    gap: 8px;
+    align-items: center;
+  }
+}

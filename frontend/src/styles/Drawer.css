@@ -65,3 +65,57 @@
 .SideBarComponent {
   background-color: rgba(0, 18, 25, 0.95);
 }
+
+/* @media (max-width: 2560px) {
+  .toggle-button {
+    padding: 15px 30px;
+  }
+  .drawer {
+    top: 115px;
+  }
+} */
+
+@media (max-width: 1440px) {
+  .toggle-button {
+    padding: 10px 20px;
+  }
+  .drawer {
+    top: 127px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .toggle-button {
+    padding: 12px 25px;
+  }
+  .drawer {
+    top: 155px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .toggle-button {
+    padding: 10px 20px;
+  }
+  .drawer {
+    top: 169px;
+  }
+}
+
+@media (max-width: 768px) {
+  .toggle-button {
+    padding: 7px 15px;
+  }
+  .drawer {
+    top: 155px;
+  }
+}
+
+@media (max-width: 480px) {
+  .toggle-button {
+    padding: 5px 10px;
+  }
+  .drawer {
+    top: 180px;
+  }
+}

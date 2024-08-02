@@ -21,3 +21,61 @@
   filter: invert(100%);
   cursor: pointer;
 }
+/* @media (max-width: 2560px) {
+  .NameBar {
+    padding: 10px;
+  }
+
+  .Text_Editor {
+    font-size: 32px;
+  }
+} */
+@media (max-width: 1440px) {
+  .NameBar {
+    padding: 5px;
+  }
+
+  .Text_Editor {
+    font-size: 32px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .NameBar {
+    padding: 15px;
+  }
+
+  .Text_Editor {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .NameBar {
+    padding: 8px;
+  }
+
+  .Text_Editor {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 768px) {
+  .NameBar {
+    padding: 5px;
+  }
+
+  .Text_Editor {
+    font-size: 26px;
+  }
+}
+
+@media (max-width: 480px) {
+  .NameBar {
+    padding: 3px;
+  }
+
+  .Text_Editor {
+    font-size: 24px;
+  }
+}

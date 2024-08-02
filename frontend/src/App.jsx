@@ -9,7 +9,7 @@ import {
 import Login from "./components/Login";
 import Signin from "./components/Signin";
 import MainPage from "./components/MainPage";
-import Test from "./components/Test";
+
 const App = () => {
   const TokenHandler = () => {
     const navigate = useNavigate();
@@ -35,7 +35,6 @@ const App = () => {
           <Route path="/login" Component={Login} />
           <Route path="/signin" Component={Signin} />
           <Route path="/" Component={MainPage} />
-          <Route path="/Test" Component={Test} />
         </Routes>
       </Router>
     </>
