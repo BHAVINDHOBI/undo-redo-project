@@ -3,6 +3,8 @@ import { Dialog, DialogTitle, DialogContent, Button } from "@mui/material";
 import "../styles/FindAReplace.css";
 import axios from "axios";
 
+const serverapiUrl = import.meta.env.VITE_API_URL;
+
 export default function DownloadDialog({
   editorRef,
   open,
@@ -29,7 +31,7 @@ export default function DownloadDialog({
     const content = getEditorContent();
     try {
       const response = await axios.post(
-        "http://localhost:8080/api/generatepdf",
+        `${serverapiUrl}/api/generatepdf`,
         { content },
         {
           responseType: "arraybuffer",
